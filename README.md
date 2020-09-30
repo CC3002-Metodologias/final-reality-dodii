@@ -64,6 +64,7 @@ are different from playable characters, and inside those, common characters are 
 - An asbtract entity for mages and tangible classes for Black and White Mages, since there aren't "untyped"
 mages.
 
+
 # Deployment
 
 Add additional notes about how to deploy this on a live system
