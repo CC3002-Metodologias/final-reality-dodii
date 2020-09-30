@@ -16,4 +16,11 @@ enemies controlled by the computer.
 
 ---
 
+The project is built under the Model-View-Controller software arquitecture pattern, also following 
+SOLID principles, along with others programming paradigms. 
+The project got started by programming the model first. It consists on the characters and the weapons 
+they may equip. Those entities are coded in such hierarchy that allows future extensions without
+altering, in a major way, already written code. 
+
+
 **The rest of the documentation is left for the users of this template to complete**
