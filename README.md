@@ -82,4 +82,4 @@ This work is licensed under a
 * Slater
 * Bergel
 * Nancy
-* Ephy, Loic, Elias and F0t0n, for helping me to get through this.
+* Ephyy, Woiic, Gresh and F0t0n, for helping me.
