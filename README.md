@@ -55,9 +55,10 @@ equip weapons, and others such as Enemy entities can't do it, according to the r
 assigned by the course. All the entities got ordered following an according hierarchy:
 [Insert UML image]
 
-More qualities were added:
+A short summary of the rest of the work and added features:
 - Additional stats such as HP, atk, def, etc., were added to the respective type characters.
-- 
+- An interface IWeapon, along with an abstract class AbstractWeapon and subsequents tangible
+weapons (Axe, Sword, etc.).
 
 # Deployment
 
