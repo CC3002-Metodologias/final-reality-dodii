@@ -52,8 +52,12 @@ and other paradigms such as Liskov's Principle.
 By example, the ICharacter interface got the equip(IWeapon weapon) and getEquippedWeapon() methods
 deleted and transferred to the IPlayerCharacter interface, since only playable characters may
 equip weapons, and others such as Enemy entities can't do it, according to the requested design 
-assigned by the course.
+assigned by the course. All the entities got ordered following an according hierarchy:
+[Insert UML image]
 
+More qualities were added:
+- Additional stats such as HP, atk, def, etc., were added to the respective type characters.
+- 
 
 # Deployment
 
