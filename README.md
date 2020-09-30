@@ -65,7 +65,7 @@ For the versions available, see the [tags on this repository](https://github.com
 ## Authors
 
 * **Ignacio Slater** - *Initial work* - [islaterm](https://github.com/islaterm)
-* **Rodrigo González O.** - *Student work* - [dodii](https://github.com/dodii)
+* **Rodrigo G. Oportot** - *Student work* - [dodii](https://github.com/dodii)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
