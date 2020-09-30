@@ -1,7 +1,10 @@
 package com.github.cc3002.finalreality.model.weapon;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import com.github.dodii.finalreality.model.weapon.Weapon;
+import com.github.dodii.finalreality.model.weapon.WeaponType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +16,7 @@ class WeaponTest {
   private static final String BOW_NAME = "Test Bow";
   private static final String KNIFE_NAME = "Test Knife";
   private static final int DAMAGE = 15;
-  private static final int SPEED = 10;
+  private static final int WEIGHT = 10;
 
   private Weapon testAxe;
   private Weapon testStaff;
@@ -23,20 +26,20 @@ class WeaponTest {
 
   @BeforeEach
   void setUp() {
-    testAxe = new Weapon(AXE_NAME, DAMAGE, SPEED, WeaponType.AXE);
-    testStaff = new Weapon(STAFF_NAME, DAMAGE, SPEED, WeaponType.STAFF);
-    testSword = new Weapon(SWORD_NAME, DAMAGE, SPEED, WeaponType.SWORD);
-    testBow = new Weapon(BOW_NAME, DAMAGE, SPEED, WeaponType.BOW);
-    testKnife = new Weapon(KNIFE_NAME, DAMAGE, SPEED, WeaponType.KNIFE);
+    testAxe = new Weapon(AXE_NAME, DAMAGE, WEIGHT, WeaponType.AXE);
+    testStaff = new Weapon(STAFF_NAME, DAMAGE, WEIGHT, WeaponType.STAFF);
+    testSword = new Weapon(SWORD_NAME, DAMAGE, WEIGHT, WeaponType.SWORD);
+    testBow = new Weapon(BOW_NAME, DAMAGE, WEIGHT, WeaponType.BOW);
+    testKnife = new Weapon(KNIFE_NAME, DAMAGE, WEIGHT, WeaponType.KNIFE);
   }
 
   @Test
   void constructorTest() {
-    var expectedAxe = new Weapon(AXE_NAME, DAMAGE, SPEED, WeaponType.AXE);
-    var expectedStaff = new Weapon(STAFF_NAME, DAMAGE, SPEED, WeaponType.STAFF);
-    var expectedSword = new Weapon(SWORD_NAME, DAMAGE, SPEED, WeaponType.SWORD);
-    var expectedBow = new Weapon(BOW_NAME, DAMAGE, SPEED, WeaponType.BOW);
-    var expectedKnife = new Weapon(KNIFE_NAME, DAMAGE, SPEED, WeaponType.KNIFE);
+    var expectedAxe = new Weapon(AXE_NAME, DAMAGE, WEIGHT, WeaponType.AXE);
+    var expectedStaff = new Weapon(STAFF_NAME, DAMAGE, WEIGHT, WeaponType.STAFF);
+    var expectedSword = new Weapon(SWORD_NAME, DAMAGE, WEIGHT, WeaponType.SWORD);
+    var expectedBow = new Weapon(BOW_NAME, DAMAGE, WEIGHT, WeaponType.BOW);
+    var expectedKnife = new Weapon(KNIFE_NAME, DAMAGE, WEIGHT, WeaponType.KNIFE);
 
     assertEquals(expectedAxe, testAxe);
     assertEquals(expectedAxe.hashCode(), testAxe.hashCode());
@@ -48,5 +51,7 @@ class WeaponTest {
     assertEquals(expectedBow.hashCode(), testBow.hashCode());
     assertEquals(expectedKnife, testKnife);
     assertEquals(expectedKnife.hashCode(), testKnife.hashCode());
+
+    assertNotEquals(expectedAxe, testSword);
   }
 }
