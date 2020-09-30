@@ -1,7 +1,7 @@
 Final Reality
 =============
 
-Context
+# Context
 -------
 
 This project's goal is to create a (simplified) clone of _Final Fantasy_'s combat, a game developed
@@ -10,11 +10,11 @@ and Programming Methodologies college course.
 Broadly speaking for the combat the player has a group of characters to control and a group of 
 enemies controlled by the computer.
 
-## Getting Started
+# Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+## Prerequisites
 
 Gradle Build Tool.
 Java
@@ -25,7 +25,7 @@ Recommended:
 - JUnit 5.0 or superior.
 - IntelliJ IDE.
 
-### Installing
+## Installing
 
 Cloning the repository onto your computer, then opening the project using an IDE that
 supports the recommended Java version.
@@ -37,14 +37,14 @@ On a side note, sometimes the gradle build doesn't execute any of the tests, so 
 and then running the build again should solve this. This might be related to compatibility issues 
 with my personal machine.
 
-## General Summary
+# General Summary
 
 The project is built under the Model-View-Controller software arquitecture pattern, also following 
 SOLID principles, along with others programming paradigms, containing an exhaustive amount of tests
 to ensure a solid, functional result. 
 
 ## Model Summary
-# Partial homework #1
+### Partial homework #1
 
 The project got started by programming the model first. It consists on the characters and the weapons 
 they may equip. Those entities are coded in such hierarchy that allows future extensions without
@@ -58,29 +58,29 @@ equip weapons, and others such as Enemy entities can't do it, according to the r
 assigned by the course.
 
 
-## Deployment
+# Deployment
 
 Add additional notes about how to deploy this on a live system
 
-## Versioning
+# Versioning
 
 For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
-## Authors
+# Authors
 
 * **Ignacio Slater** - *Initial work* - [islaterm](https://github.com/islaterm)
 * **Rodrigo G. Oportot** - *Student work* - [dodii](https://github.com/dodii)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
-## License
+# License
 
 ![http://creativecommons.org/licenses/by/4.0/](https://i.creativecommons.org/l/by/4.0/88x31.png)
 
 This work is licensed under a 
 [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
 
-## Acknowledgments
+# Acknowledgments
 
 * Slater
 * Bergel
