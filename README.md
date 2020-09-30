@@ -1,8 +1,6 @@
 Final Reality
 =============
 
-# Context
-
 This project's goal is to create a (simplified) clone of _Final Fantasy_'s combat, a game developed
 by [_Square Enix_](https://www.square-enix.com), as a part of the work assigned by CC3002 Design
 and Programming Methodologies college course.
