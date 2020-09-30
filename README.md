@@ -1,11 +1,6 @@
 Final Reality
 =============
 
-![http://creativecommons.org/licenses/by/4.0/](https://i.creativecommons.org/l/by/4.0/88x31.png)
-
-This work is licensed under a 
-[Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
-
 Context
 -------
 
@@ -70,6 +65,11 @@ For the versions available, see the [tags on this repository](https://github.com
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
+
+![http://creativecommons.org/licenses/by/4.0/](https://i.creativecommons.org/l/by/4.0/88x31.png)
+
+This work is licensed under a 
+[Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
 
 ## Acknowledgments
 
