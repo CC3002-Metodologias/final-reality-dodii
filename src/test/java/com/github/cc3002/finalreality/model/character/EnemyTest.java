@@ -1,7 +1,8 @@
 package com.github.cc3002.finalreality.model.character;
 
-import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
+import com.github.dodii.finalreality.model.character.enemycharacters.Enemy;
+import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
+import com.github.dodii.finalreality.model.character.playablecharacters.PlayerCharacter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

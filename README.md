@@ -59,6 +59,11 @@ A short summary of the rest of the work and added features:
 - Additional stats such as HP, atk, def, etc., were added to the respective type characters.
 - An interface IWeapon, along with an abstract class AbstractWeapon and subsequents tangible
 weapons (Axe, Sword, etc.).
+- Additional interfaces for the character entities to distinguish them from others, since Enemies
+are different from playable characters, and inside those, common characters are different from mages ones.
+- An asbtract entity for mages and tangible classes for Black and White Mages, since there aren't "untyped"
+mages. Also an interface IMageCharacter associated to them.
+
 
 # Deployment
 

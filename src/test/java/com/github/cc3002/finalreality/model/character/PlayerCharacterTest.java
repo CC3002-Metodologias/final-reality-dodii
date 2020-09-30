@@ -4,8 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
+import com.github.dodii.finalreality.model.character.enemycharacters.Enemy;
+import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
+import com.github.dodii.finalreality.model.character.playablecharacters.PlayerCharacter;
 import java.util.EnumMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +46,8 @@ class PlayerCharacterTest extends AbstractCharacterTest {
     for (var characterClass :
         characterNames.keySet()) {
       testCharacters.add(
-          new PlayerCharacter(characterNames.get(characterClass), turns, characterClass));
+          new PlayerCharacter(characterNames.get(characterClass), 10, 3 turns,
+                  characterClass));
     }
   }
 
@@ -54,15 +56,15 @@ class PlayerCharacterTest extends AbstractCharacterTest {
    */
   @Test
   void constructorTest() {
-    var enemy = new Enemy("Enemy", 10, turns);
+    var enemy = new Enemy("Enemy", 10, 3, 3, 3, turns);
     for (var character :
         testCharacters) {
       var characterClass = character.getCharacterClass();
       var characterName = characterNames.get(characterClass);
-      checkConstruction(new PlayerCharacter(characterName, turns, characterClass),
+      checkConstruction(new PlayerCharacter(characterName, 10, 3, turns, characterClass),
           character,
-          new PlayerCharacter("Test", turns, characterClass),
-          new PlayerCharacter(characterName, turns,
+          new PlayerCharacter("Test", 10, 3, turns, characterClass),
+          new PlayerCharacter(characterName, 10, 3, turns,
               characterClass == CharacterClass.THIEF ? CharacterClass.BLACK_MAGE
                   : CharacterClass.THIEF));
       assertNotEquals(character, enemy);
