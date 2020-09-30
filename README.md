@@ -62,7 +62,7 @@ weapons (Axe, Sword, etc.).
 - Additional interfaces for the character entities to distinguish them from others, since Enemies
 are different from playable characters, and inside those, common characters are different from mages ones.
 - An asbtract entity for mages and tangible classes for Black and White Mages, since there aren't "untyped"
-mages.
+mages. Also an interface IMageCharacter associated to them.
 
 
 # Deployment
