@@ -48,6 +48,13 @@ The project got started by programming the model first. It consists on the chara
 they may equip. Those entities are coded in such hierarchy that allows future extensions without
 altering, in a major way, already written code. 
 
+Some of the base code was altered by the student's criteria so it would fit with the SOLID principles 
+and other paradigms such as Liskov's Principle.
+By example, the ICharacter interface got the equip(IWeapon weapon) and getEquippedWeapon() methods
+deleted and transferred to the IPlayerCharacter interface, since only playable characters may
+equip weapons, and others such as Enemy entities can't do it, according to the requested design 
+assigned by the course.
+
 
 ## Deployment
 
