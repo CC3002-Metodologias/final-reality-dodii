@@ -44,6 +44,8 @@ SOLID principles, along with others programming paradigms, containing an exhaust
 to ensure a solid, functional result. 
 
 ## Model Summary
+# Partial homework #1
+
 The project got started by programming the model first. It consists on the characters and the weapons 
 they may equip. Those entities are coded in such hierarchy that allows future extensions without
 altering, in a major way, already written code. 
