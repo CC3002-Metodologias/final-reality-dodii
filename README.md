@@ -75,7 +75,8 @@ Some details added to the model:
 
 # Deployment
 
-Add additional notes about how to deploy this on a live system
+Downloading/cloning the project and opening it using IntelliJ IDE, then you can run the gradle build to
+check the completeness of the tests.
 
 # Versioning
 
@@ -99,6 +100,6 @@ This work is licensed under a
 
 * Slater
 * Bergel
-* Nancy
+* Hitschfeld
 * Ephyy, Woiic, Gresh and F0t0n, for helping me.
 
