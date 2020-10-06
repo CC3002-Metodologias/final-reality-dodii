@@ -1,9 +1,10 @@
-package com.github.cc3002.finalreality.model.character;
+package com.github.cc3002.finalreality.model.character.playablecharactertests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import com.github.cc3002.finalreality.model.character.AbstractCharacterTest;
 import com.github.dodii.finalreality.model.character.enemycharacters.Enemy;
 import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
 import com.github.dodii.finalreality.model.character.playablecharacters.PlayerCharacter;

@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.github.dodii.finalreality.model.character.ICharacter;
-import com.github.dodii.finalreality.model.weapon.Weapon;
+import com.github.dodii.finalreality.model.weapon.IWeapon;
 import com.github.dodii.finalreality.model.weapon.WeaponType;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,8 @@ public abstract class AbstractCharacterTest {
 
   protected BlockingQueue<ICharacter> turns;
   protected List<ICharacter> testCharacters;
-  protected Weapon testWeapon;
+  protected IWeapon testWeapon;
+  protected static final int DEFENSE = 3;
 
   /**
    * Checks that the character waits the appropriate amount of time for it's turn.
