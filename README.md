@@ -41,6 +41,9 @@ SOLID principles, along with others programming paradigms, containing an exhaust
 to ensure a solid, functional result. 
 
 ## Model Summary
+The model summary will be explained in a "changelog" kind of way, since the work progress is partitioned
+through partial homeworks. Additional and required details will be added for a more detailed insight.
+
 ### Partial homework #1
 
 The project got started by programming the model first. It consists on the characters and the weapons 
