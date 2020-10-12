@@ -99,9 +99,6 @@ See also the list of [contributors](https://github.com/your/project/contributors
 This work is licensed under a 
 [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
 
-# Acknowledgments
 
-* Slater
-* Bergel
-* Hitschfeld
-* Ephyy, Woiic, Gresh and F0t0n, for helping me.
+<<<<<<<
+>>>>>>> a1e28b757f10ed53fc602a472270542fc34f11b3
