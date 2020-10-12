@@ -41,6 +41,7 @@ SOLID principles, along with others programming paradigms, containing an exhaust
 to ensure a solid, functional result. 
 
 ## Model Summary
+
 The model summary will be explained in a "changelog" kind of way, since the work progress is partitioned
 through partial homeworks. Additional and required details will be added for a more detailed insight.
 
@@ -99,6 +100,3 @@ See also the list of [contributors](https://github.com/your/project/contributors
 This work is licensed under a 
 [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
 
-
-<<<<<<<
->>>>>>> a1e28b757f10ed53fc602a472270542fc34f11b3
