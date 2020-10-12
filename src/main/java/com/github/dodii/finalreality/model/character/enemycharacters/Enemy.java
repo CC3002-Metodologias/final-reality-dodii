@@ -5,6 +5,7 @@ import com.github.dodii.finalreality.model.character.ICharacter;
 import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -16,8 +17,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Enemy extends AbstractCharacter implements IEnemy {
 
-  private final int weight;
   private final int atk;
+  private final int weight;
 
   /**
    * Creates a new enemy with a name, a weight and the queue with the characters ready to
@@ -26,15 +27,18 @@ public class Enemy extends AbstractCharacter implements IEnemy {
   public Enemy(@NotNull final String name, final int hp, final int atk, final int def,
                final int weight, @NotNull final BlockingQueue<ICharacter> turnsQueue) {
     super(name, hp, def, CharacterClass.ENEMY, turnsQueue);
-    this.weight = weight;
     this.atk = atk;
+    this.weight = weight;
   }
 
   /**
-   * Returns the weight of this enemy.
+   * Calculates the character's delay by using the weight of the this enemy-type
+   * character.
+   * @return the delay in the turn of the character.
    */
-  public int getWeight() {
-    return weight;
+  @Override
+  public long getDelay() {
+    return this.weight / 10;
   }
 
   /**
@@ -45,11 +49,31 @@ public class Enemy extends AbstractCharacter implements IEnemy {
   }
 
   /**
+   * Returns the weight of this enemy.
+   */
+  public int getWeight() {
+    return weight;
+  }
+
+  /**
    * @return true if it's an instance of a playable character.
    */
   @Override
   public boolean isPlayableCharacter() {
     return false;
+  }
+
+  /**
+   * Returns the hashcode of the character.
+   * A pair of enemies have the same hashcode if they share the same
+   * name, hp, atk, def, enemy class and weight. Sharing the same
+   * character class (enemy type) may be redundant for now, but it's better in case
+   * of future changes.
+   */
+  @Override
+  public int hashCode() {
+    return Objects.hash(getName(), getHP(), getAtk(), getDef(),
+            getWeight(), getCharacterClass());
   }
 
   /**
@@ -69,14 +93,9 @@ public class Enemy extends AbstractCharacter implements IEnemy {
     final Enemy enemy = (Enemy) o;
     return getName().equals(enemy.getName()) &&
             getHP() == enemy.getHP() &&
+            getAtk() == enemy.getAtk() &&
             getDef() == enemy.getDef() &&
-            getCharacterClass() == enemy.getCharacterClass() &&
             getWeight() == enemy.getWeight() &&
-            getAtk() == enemy.getAtk();
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(getWeight());
+            getCharacterClass() == enemy.getCharacterClass();
   }
 }

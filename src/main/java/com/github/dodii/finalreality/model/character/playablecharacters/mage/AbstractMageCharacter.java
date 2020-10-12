@@ -5,6 +5,7 @@ import com.github.dodii.finalreality.model.character.playablecharacters.PlayerCh
 import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -24,8 +25,8 @@ public abstract class AbstractMageCharacter extends PlayerCharacter implements I
      * @param hp             the character's hp.
      * @param def            the character's def.
      * @param mana           the character's mana.
-     * @param turnsQueue     the queue with the characters waiting for their turn
-     * @param characterClass
+     * @param turnsQueue     the queue with the characters waiting for their turn.
+     * @param characterClass the class of the mage.
      */
     public AbstractMageCharacter(@NotNull String name, final int hp, final int def, final int mana,
                                  CharacterClass characterClass,
@@ -39,6 +40,17 @@ public abstract class AbstractMageCharacter extends PlayerCharacter implements I
      */
     public int getMana() {
         return mana;
+    }
+
+    /**
+     * Returns the hashcode of the character.
+     * A pair of mages have the same hashcode if they share
+     * the same name, hp, def, mana, equipped weapon and class.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getHP(), getDef(),
+                getMana(), getEquippedWeapon(), getCharacterClass());
     }
 
     /**
@@ -60,6 +72,7 @@ public abstract class AbstractMageCharacter extends PlayerCharacter implements I
                 getHP() == mage.getHP() &&
                 getDef() == mage.getDef() &&
                 getCharacterClass() == mage.getCharacterClass() &&
+                getEquippedWeapon().equals(mage.getEquippedWeapon()) &&
                 getMana() == mage.getMana();
     }
 }

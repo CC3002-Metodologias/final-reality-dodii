@@ -8,6 +8,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import com.github.dodii.finalreality.model.weapon.NullWeapon;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -24,9 +26,8 @@ public abstract class AbstractCharacter implements ICharacter {
 
   private final BlockingQueue<ICharacter> turnsQueue;
   private final String name;
-  private IWeapon equippedWeapon = null;
   private ScheduledExecutorService scheduledExecutor;
-  private CharacterClass characterClass;
+  private final CharacterClass characterClass;
 
   /**
    * Creates a character
@@ -37,7 +38,7 @@ public abstract class AbstractCharacter implements ICharacter {
    * @param characterClass the class of the character.
    */
   protected AbstractCharacter(@NotNull String name, final int hp, final int def,
-                              final CharacterClass characterClass,
+                              CharacterClass characterClass,
                               @NotNull BlockingQueue<ICharacter> turnsQueue) {
     this.turnsQueue = turnsQueue;
     this.name = name;
@@ -49,24 +50,27 @@ public abstract class AbstractCharacter implements ICharacter {
   /**
    * Sets a scheduled executor to make this character (thread) wait for {@code speed / 10}
    * seconds before adding the character to the queue.
+   * It calculates the delay on every subclass depending on the type of the character.
+   * Changed the instanceof for a method call, so it won't break SOLID principles.
    */
   @Override
   public void waitTurn() {
     scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-    if (this instanceof PlayerCharacter) {
-      scheduledExecutor
-          .schedule(this::addToQueue, equippedWeapon.getWeight() / 10, TimeUnit.SECONDS);
-    } else {
-      var enemy = (Enemy) this;
-      scheduledExecutor
-          .schedule(this::addToQueue, enemy.getWeight() / 10, TimeUnit.SECONDS);
-    }
+    scheduledExecutor.schedule(this::addToQueue, this.getDelay(), TimeUnit.SECONDS);
   }
+
+  /**
+   * Calculates the character's delay by dividing the weight of the character itself
+   * (enemy case) or its equipped weapon's weight.
+   * @return the delay in the turn of the character.
+   */
+  @Override
+  public abstract long getDelay();
 
   /**
    * Adds this character to the turns queue.
    */
-  private void addToQueue() {
+  protected void addToQueue() {
     turnsQueue.add(this);
     scheduledExecutor.shutdown();
   }
@@ -98,6 +102,18 @@ public abstract class AbstractCharacter implements ICharacter {
   public CharacterClass getCharacterClass() {
     return characterClass;
   }
+
+  /**
+   * @return true if the character it's an instance of a playable one.
+   */
+  @Override
+  public abstract boolean isPlayableCharacter();
+
+  /**
+   * Returns the hashcode of the character.
+   */
+  @Override
+  public abstract int hashCode();
 
   /**
    * Compares two characters.

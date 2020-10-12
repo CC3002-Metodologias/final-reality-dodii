@@ -3,7 +3,10 @@ package com.github.dodii;
 import com.github.dodii.finalreality.model.character.ICharacter;
 import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
 import com.github.dodii.finalreality.model.character.playablecharacters.PlayerCharacter;
-import com.github.dodii.finalreality.model.weapon.Weapon;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.ThiefCharacter;
+import com.github.dodii.finalreality.model.weapon.Axe;
+import com.github.dodii.finalreality.model.weapon.IWeapon;
+import com.github.dodii.finalreality.model.weapon.Knife;
 import com.github.dodii.finalreality.model.weapon.WeaponType;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
@@ -19,9 +22,8 @@ public class TimerExample {
     Random rng = new Random();
     for (int i = 0; i < 10; i++) {
       // Gives a random speed to each character to generate different waiting times
-      var weapon = new Weapon("", 0, rng.nextInt(50), WeaponType.KNIFE);
-      var character = new PlayerCharacter(Integer.toString(i), queue,
-          CharacterClass.THIEF);
+      var weapon = new Knife("", 0, rng.nextInt(50));
+      var character = new ThiefCharacter(Integer.toString(i), 10, 5, queue);
       character.equip(weapon);
       character.waitTurn();
     }

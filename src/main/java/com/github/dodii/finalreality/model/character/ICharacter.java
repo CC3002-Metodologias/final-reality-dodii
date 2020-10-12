@@ -18,6 +18,13 @@ public interface ICharacter {
   void waitTurn();
 
   /**
+   * Calculates the character's delay by dividing the weight of the character itself
+   * (enemy case) or its equipped weapon's weight.
+   * @return the delay in the turn of the character.
+   */
+  long getDelay();
+
+  /**
    * Returns this character's name.
    */
   String getName();
@@ -41,6 +48,11 @@ public interface ICharacter {
    * Returns true or false depending on the character.
    */
   boolean isPlayableCharacter();
+
+  /**
+   * Returns the hashcode of the character.
+   */
+  int hashCode();
 
   /**
    * Compares two characters.

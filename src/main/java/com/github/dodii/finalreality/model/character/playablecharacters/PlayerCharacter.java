@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
 import com.github.dodii.finalreality.model.weapon.IWeapon;
+import com.github.dodii.finalreality.model.weapon.NullWeapon;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -16,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class PlayerCharacter extends AbstractCharacter implements IPlayerCharacter {
 
-  private IWeapon equippedWeapon = null;
+  private IWeapon equippedWeapon = new NullWeapon();
 
   /**
    * Creates a new character.
@@ -47,18 +48,23 @@ public class PlayerCharacter extends AbstractCharacter implements IPlayerCharact
   }
 
   /**
-   * Equips a certain weapon to a character. It checks by double dispatch
-   * if the weapon can actually be equipped by the character, depending on its class.
+   * Calculates the character's delay by using the weight of the equipped weapon.
+   * @return the delay in the turn of the character.
+   */
+  @Override
+  public long getDelay() {
+    return getEquippedWeapon().getWeight() / 10;
+  }
+
+  /**
+   * Equips a certain weapon to a character.
+   * It checks by double dispatch if the weapon can actually be
+   * equipped by the character, depending on its class.
    * @param weapon weapon to be equipped.
    */
   @Override
   public void equip(IWeapon weapon) {
       this.equippedWeapon = weapon;
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(getCharacterClass());
   }
 
   /**
@@ -67,6 +73,17 @@ public class PlayerCharacter extends AbstractCharacter implements IPlayerCharact
   @Override
   public boolean isPlayableCharacter() {
     return true;
+  }
+
+  /**
+   * Returns the hashcode of the character.
+   * A pair of playable characters have an equivalent hashcode if
+   * they share the same name, hp, def, equipped weapon and its class.
+   */
+  @Override
+  public int hashCode() {
+    return Objects.hash(getName(), getHP(), getDef(), getEquippedWeapon(),
+            getCharacterClass());
   }
 
   /**
@@ -83,10 +100,11 @@ public class PlayerCharacter extends AbstractCharacter implements IPlayerCharact
       return false;
     }
 
-    final IPlayerCharacter mage = (IPlayerCharacter) o;
-    return getName().equals(mage.getName()) &&
-            getHP() == mage.getHP() &&
-            getDef() == mage.getDef() &&
-            getCharacterClass() == mage.getCharacterClass();
+    final IPlayerCharacter playableChar = (IPlayerCharacter) o;
+    return getName().equals(playableChar.getName()) &&
+            getHP() == playableChar.getHP() &&
+            getDef() == playableChar.getDef() &&
+            getEquippedWeapon().equals(playableChar.getEquippedWeapon()) &&
+            getCharacterClass() == playableChar.getCharacterClass();
   }
 }

@@ -8,7 +8,7 @@ import java.util.Objects;
  * @author Ignacio Slater Muñoz.
  * @author Rodrigo Oportot.
  */
-public class AbstractWeapon implements IWeapon {
+public abstract class AbstractWeapon implements IWeapon {
 
     private final String name;
     private final int dmg;
