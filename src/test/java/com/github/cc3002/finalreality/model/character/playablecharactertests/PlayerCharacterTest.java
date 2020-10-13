@@ -91,8 +91,11 @@ class PlayerCharacterTest extends AbstractCharacterTest {
               characterClass == CharacterClass.THIEF ? CharacterClass.BLACK_MAGE
                   : CharacterClass.THIEF, turns));
       assertNotEquals(character, enemy);
+      assertNotEquals(new PlayerCharacter(characterName, 1, 3, characterClass,
+             turns), character);
+      assertNotEquals(new PlayerCharacter(characterName, 10, 1, characterClass,
+              turns), character);
     }
-
   }
 
   /**
@@ -102,7 +105,7 @@ class PlayerCharacterTest extends AbstractCharacterTest {
    * every instance is tested
    */
   @Override
-  @RepeatedTest(10)
+  @RepeatedTest(3)
   public void waitTurnTest() {
     //weaponless
     for (var character : testCharacters) {

@@ -17,6 +17,9 @@ public class NullWeaponTest extends AbstractWeaponTest {
 
     private NullWeapon testNull;
 
+    /**
+     * Sets up a null weapon.
+     */
     @Override
     @BeforeEach
     public void setUp() {
@@ -24,6 +27,9 @@ public class NullWeaponTest extends AbstractWeaponTest {
         testNull = new NullWeapon();
     }
 
+    /**
+     * Null weapon constructor test.
+     */
     @Test
     public void NullWeaponConstructorTest() {
         NullWeapon anotherNull = new NullWeapon();

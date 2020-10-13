@@ -17,6 +17,9 @@ public class SwordTest extends AbstractWeaponTest {
 
     private Sword testSword;
 
+    /**
+     * Sets up a sword.
+     */
     @Override
     @BeforeEach
     public void setUp() {
@@ -24,6 +27,9 @@ public class SwordTest extends AbstractWeaponTest {
         testSword = new Sword("Test Sword", 15, 10);
     }
 
+    /**
+     * Sword constructor test.
+     */
     @Test
     public void SwordConstructorTest() {
         Sword anotherSword = new Sword("Test Sword", 15, 10);

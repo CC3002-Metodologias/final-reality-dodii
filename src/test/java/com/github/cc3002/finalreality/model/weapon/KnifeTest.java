@@ -15,6 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class KnifeTest extends AbstractWeaponTest {
     private Knife testKnife;
 
+    /**
+     * Sets up a Knife.
+     */
     @Override
     @BeforeEach
     public void setUp() {
@@ -22,6 +25,9 @@ public class KnifeTest extends AbstractWeaponTest {
         testKnife = new Knife("Test Knife", 15, 10);
     }
 
+    /**
+     * Knife constructor test.
+     */
     @Test
     public void KnifeConstructorTest() {
         Knife anotherKnife = new Knife("Test Knife", 15, 10);

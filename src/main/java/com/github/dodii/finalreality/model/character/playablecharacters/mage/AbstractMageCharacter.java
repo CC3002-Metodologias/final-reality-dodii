@@ -54,7 +54,7 @@ public abstract class AbstractMageCharacter extends PlayerCharacter implements I
     }
 
     /**
-     * Compares two characters.
+     * Compares two mage characters.
      * @param o character to compare.
      * @return true if both are equal.
      */

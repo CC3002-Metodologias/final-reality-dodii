@@ -127,29 +127,41 @@ public class AbstractWeaponTest {
    *
    * Constructor test for all instances of weapons.
    * It checks the equals and hashcode methods.
+   * Creates a various amount of different instances to test.
    *
    */
   @Test
   public void constructorTest() {
-    var expectedAxe = new Axe(AXE_NAME, DAMAGE, WEIGHT);
-    var expectedStaff = new Staff(STAFF_NAME, DAMAGE, MAGIC_DAMAGE, WEIGHT);
-    var expectedSword = new Sword(SWORD_NAME, DAMAGE, WEIGHT);
-    var expectedBow = new Bow(BOW_NAME, DAMAGE, WEIGHT);
-    var expectedKnife = new Knife(KNIFE_NAME, DAMAGE, WEIGHT);
+    Axe expectedAxe = new Axe(AXE_NAME, DAMAGE, WEIGHT);
+    Staff expectedStaff = new Staff(STAFF_NAME, DAMAGE, MAGIC_DAMAGE, WEIGHT);
+    Sword expectedSword = new Sword(SWORD_NAME, DAMAGE, WEIGHT);
+    Bow expectedBow = new Bow(BOW_NAME, DAMAGE, WEIGHT);
+    Knife expectedKnife = new Knife(KNIFE_NAME, DAMAGE, WEIGHT);
+    NullWeapon expectedNull = new NullWeapon();
 
+    Axe aux_Axe = new Axe("Aux Axe", DAMAGE, 1);
     /** Axe **/
     checkEquals(expectedAxe, testAxe);
     checkNotEquals(expectedAxe, testBow);
     checkNotEquals(expectedAxe, testKnife);
     checkNotEquals(expectedAxe, testStaff);
     checkNotEquals(expectedAxe, testSword);
+    checkNotEquals(expectedAxe, testNull);
+    checkNotEquals(aux_Axe, testAxe);
 
+    /* particular case */
+    Sword aux_Sword = new Sword("Test Axe", DAMAGE, WEIGHT);
+    checkNotEquals(aux_Sword, testAxe);
+
+    Bow aux_Bow = new Bow("Test Axe", 1, WEIGHT);
     /** Bow **/
     checkEquals(expectedBow, testBow);
     checkNotEquals(expectedBow, testAxe);
     checkNotEquals(expectedBow, testKnife);
     checkNotEquals(expectedBow, testStaff);
     checkNotEquals(expectedBow, testSword);
+    checkNotEquals(expectedBow, testNull);
+    checkNotEquals(aux_Axe, expectedBow);
 
     /** Knife **/
     checkEquals(expectedKnife, testKnife);
@@ -157,6 +169,7 @@ public class AbstractWeaponTest {
     checkNotEquals(expectedKnife, testBow);
     checkNotEquals(expectedKnife, testStaff);
     checkNotEquals(expectedKnife, testSword);
+    checkNotEquals(expectedKnife, testNull);
 
     /** Staff **/
     checkEquals(expectedStaff, testStaff);
@@ -164,6 +177,7 @@ public class AbstractWeaponTest {
     checkNotEquals(expectedStaff, testBow);
     checkNotEquals(expectedStaff, testKnife);
     checkNotEquals(expectedStaff, testSword);
+    checkNotEquals(expectedStaff, testNull);
 
     /** Sword **/
     checkEquals(expectedSword, testSword);
@@ -171,6 +185,15 @@ public class AbstractWeaponTest {
     checkNotEquals(expectedSword, testBow);
     checkNotEquals(expectedSword, testKnife);
     checkNotEquals(expectedSword, testStaff);
+    checkNotEquals(expectedSword, testNull);
+
+    /** Null Weapon**/
+    checkEquals(expectedNull, testNull);
+    checkNotEquals(expectedNull, testAxe);
+    checkNotEquals(expectedNull, testBow);
+    checkNotEquals(expectedNull, testKnife);
+    checkNotEquals(expectedNull, testStaff);
+    checkNotEquals(expectedNull, testSword);
 
   }
 }

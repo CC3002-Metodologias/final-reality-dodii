@@ -4,6 +4,7 @@ import com.github.cc3002.finalreality.model.character.AbstractCharacterTest;
 import com.github.dodii.finalreality.model.character.enemycharacters.Enemy;
 import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
 import com.github.dodii.finalreality.model.character.playablecharacters.PlayerCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.KnightCharacter;
 import com.github.dodii.finalreality.model.character.playablecharacters.common.ThiefCharacter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -44,13 +45,20 @@ class EnemyTest extends AbstractCharacterTest {
         testCharacters.get(0),
         new Enemy(ENEMY_NAME, 5, ATTACK_DAMAGE, DEFENSE, WEIGHT, turns),
         new ThiefCharacter("Test Thief", HP, DEFENSE, turns));
+
+    assertNotEquals(new Enemy("Goblin", 10, 3, DEFENSE,
+            WEIGHT, turns), testCharacters.get(0));
+    assertNotEquals(new Enemy("Goblin", 10, ATTACK_DAMAGE, 1,
+            WEIGHT, turns), testCharacters.get(0));
+    assertNotEquals(new Enemy("Goblin", 10, ATTACK_DAMAGE, DEFENSE,
+            1, turns), testCharacters.get(0));
   }
 
   /**
    * Waiting delay for the character's turn. It should be (weight = 10)/10.
    */
   @Override
-  @RepeatedTest(5)
+  @RepeatedTest(3)
   public void waitTurnTest() {
     checkWaitTurn(testCharacters.get(0));
   }

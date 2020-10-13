@@ -52,8 +52,11 @@ public class AbstractMageCharacterTest extends PlayerCharacterTest {
 
     }
 
+    /**
+     * waitTurn() test, with Mages instances, with and without staff equipped.
+     */
     @Override
-    @RepeatedTest(5)
+    @RepeatedTest(3)
     public void waitTurnTest() {
         //weaponless
         checkWaitTurn(whiteMage);

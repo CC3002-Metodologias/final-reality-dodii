@@ -16,6 +16,9 @@ public class BowTest extends AbstractWeaponTest {
 
     private Bow testBow;
 
+    /**
+     * Set ups a Bow.
+     */
     @Override
     @BeforeEach
     public void setUp() {
@@ -23,6 +26,9 @@ public class BowTest extends AbstractWeaponTest {
         testBow = new Bow("Test Bow", 15, 10);
     }
 
+    /**
+     * Bow constructor test.
+     */
     @Test
     public void BowConstructorTest() {
         Bow anotherBow = new Bow("Test Bow", 15, 10);

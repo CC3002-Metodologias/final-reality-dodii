@@ -15,6 +15,9 @@ public class AxeTest extends AbstractWeaponTest {
 
     private Axe testAxe;
 
+    /**
+     * Set up for an Axe.
+     */
     @Override
     @BeforeEach
     public void setUp() {
@@ -23,9 +26,11 @@ public class AxeTest extends AbstractWeaponTest {
     }
 
 
+    /**
+     * Axe constructor Test.
+     */
     @Test
     public void AxeConstructorTest() {
-
         super.constructorTest();
         Axe anotherAxe = new Axe("Test Axe", 15, 10);
         Axe differentAxe = new Axe("Different Axe", 12, 3);
