@@ -126,6 +126,7 @@ classes explained before. They are pretty straightforwad too, so it won't be nec
 Downloading/cloning the project and opening it using IntelliJ IDE, then you can run the gradle build to
 check the completeness of the tests.
 
+
 # Versioning
 
 For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
@@ -146,4 +147,3 @@ This work is licensed under a
 
 # Thanks to
 - Ephyy
-
