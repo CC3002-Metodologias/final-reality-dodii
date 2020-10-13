@@ -68,6 +68,12 @@ weapons (Axe, Sword, etc.).
 are different from playable characters, and inside those, common characters are different from mage ones.
 - An asbtract entity for mages and concrete classes for Black and White Mages, since there aren't "untyped"
 mages. Also an interface IMageCharacter associated to them.
+- As supposed, PlayerCharacter is enough to associate with it the creation of common-class characters 
+instances, since there aren't any specializes treats to program for those classes yet. When a common class
+character is instanced, it will have the ICommonCharacter interface implemented, but it will remain solely as
+a placeholder for now. Common class characters will be instanced by their own classes (e.g Knight dodi = new 
+Knight(...)) but there is no problem (until now) if they are instanced as PlayerCharacter' class.
+  
 
 ### Partial homework #2
 The testing process has been initiated. The test classes involved are built over a hierarchy, similar
@@ -85,9 +91,11 @@ waitTurn() method. It will be also used in future implementations.
 - Equals() and hashcode() methods have a more suitable implementation depending on the class, following the
 equals(O1) == equals(O2) <=> hashcode(O1) == hashcode(O2) equivalence.
 
-The test classes, as said before, follow a hierarchy too. [Insert simple UML test]
-
-queda para mañana zzz
+The test classes, as said before, follow a hierarchy too. For characters, it consists on an AbstractCharacterTest
+test class that contains the testing methods for the common behavior of all characters, such as waiting for their
+turn, the base constructor of the AbstractCharacter class and some other methods detailed on the code.
+From this class emerge two testing subclasses, one for testing the Enemy class behavior (its weight and how it waits
+for its turn); the other class, PlayerCharacterTest, it's for the commom behavior of playable characters.
 
 
 # Deployment
