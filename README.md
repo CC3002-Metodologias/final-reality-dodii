@@ -97,8 +97,11 @@ equals(O1) == equals(O2) <=> hashcode(O1) == hashcode(O2) equivalence.
 The test classes, as said before, follow a hierarchy too. For characters, it consists on an AbstractCharacterTest
 test class that contains the testing methods for the common behavior of all characters, such as waiting for their
 turn, the base constructor of the AbstractCharacter class and some other methods detailed on the code.
-From this class emerge two testing subclasses, one for testing the Enemy class behavior (its weight and how it waits
-for its turn); the other class, PlayerCharacterTest, it's for the commom behavior of playable characters.
+From this class emerge two testing subclasses, one for testing the Enemy class behavior (its weight, its coconstructor 
+and how it waits for its turn); the other class, PlayerCharacterTest, tests the commom behavior of playable characters.
+This class acts in a similar way to its super class, and makes use of its inherited methods to test part of the code. By 
+the other hand, when checking the constructor, it creates an array to put the three available common-class instances of 
+playable characters, then this array is uses by other testing methods to check the program works correctly. 
 
 
 # Deployment
