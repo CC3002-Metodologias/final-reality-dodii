@@ -103,6 +103,9 @@ This class acts in a similar way to its super class, and makes use of its inheri
 the other hand, when checking the constructor, it creates an array to put the three available common-class instances of 
 playable characters, then this array is uses by other testing methods to check the program works correctly. 
 
+On a side note, the testing takes some time since the waitTurnTest() method delays the thread by some seconds, and every
+repetition adds more time to it.
+
 
 # Deployment
 
