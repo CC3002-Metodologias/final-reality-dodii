@@ -57,10 +57,10 @@ and other paradigms such as Liskov's Principle.
 By example, the ICharacter interface got the equip(IWeapon weapon) and getEquippedWeapon() methods
 deleted and transferred to the IPlayerCharacter interface, since only playable characters may
 equip weapons. Others such as the Enemy entities can't do it, according to the requested design 
-assigned by the project. All the entities got ordered following hierarchy shown on the CharactersModel.PNG
-and WeaponsModel.PNG.
+assigned by the project. All the entities got ordered following the hierarchy shown on the 
+CharactersModel.PNG and WeaponsModel.PNG files.
 
-A short summary of the rest of the work and added features:
+A short summary of the rest of the work, assumptions made and added features:
 - Additional stats such as HP, atk, def, etc., were added to the respective type characters.
 - An interface IWeapon, along with an abstract class AbstractWeapon and subsequents concrete
 weapons (Axe, Sword, etc.).
@@ -70,34 +70,38 @@ ICommonCharacter and IMageCharacter both extends from IPlayerCharacter, but they
 of characters may be sustantially different in the next implementations of the code.
 - An asbtract entity for mages and concrete classes for Black and White Mages, since there aren't "untyped"
 mages. Also an interface IMageCharacter associated to them.
-- As supposed, PlayerCharacter is enough to associate it with the creation of common-class characters 
-instances, since there aren't any specializes treats to program for those classes yet. When a common class
-character is instanced, it will have the ICommonCharacter interface implemented, nonetheless it will remain solely
-as a placeholder for now. Common class characters will be instanced by their own classes (e.g Knight dodi = new 
-Knight(...)) but there shouldn't be a problem (until now) if they are instanced as PlayerCharacter' class, like
-it's done on the testing classes. By convention, they will always be instanced, ingame, as its most particular 
+- As supposed, PlayerCharacter is enough on its own to associate it with the creation of common-class characters 
+instances, since there aren't any specializes treats to program for those classes yet (next implementations may
+change the class to an abstract one, when double dispatch gets coded for a different version of equip()). When a 
+common classcharacter is instanced, it will have the ICommonCharacter interface implemented, nonetheless it will 
+remain solely as a placeholder for now. Common class characters will be instanced by their own classes (e.g Knight 
+dodi = new Knight(...)) but there shouldn't be a problem (by now) if they are instanced as PlayerCharacter' class, 
+like how it's done on the testing classes. By convention, they will always be instanced, ingame, as its most particular 
 instance.
 - All objects will be created with non-negative or greater than 0 stats, depending on the object.
 - The enum types CharacterClass and WeaponType weren't deleted yet, since the model's classes still
-use it. When Double Dispatch gets implemented, they won't be necessary anymore.
-
+use it. When double dispatch gets implemented on other methods, they won't be necessary anymore, because
+each class already knows its own "type". It could have been deleted, but it wasn´t just for the sake of 
+clarity purposes of this first part of the work.
 
 ### Partial homework #2
 The testing process has been initiated. The test classes involved are built over a hierarchy, similar
-to the program's model.
+to the project's model.
 
-Before explaining the testing classes, some important details added to the model:
+Before explaining the testing classes, some important assumptions made and other details added to the model:
 
 - Magic Damage stat on the Staff weapon Class.
 - Added mana stat to mage characters.
 - getDelay() method which returns the delay of a character before acting on its turn, calculated differently
 if it's an enemy (uses its own weight) or if it's a playable character (based on its equipped weapon).
-- NullWeapon class created, representing an instance of "unequipped" weapon, with 0 attack and 0 weight. Player
-Character's may equip it.
+- NullWeapon class created, representing an instance of an "unequipped" weapon, with 0 attack and 0 weight. 
+PlayerCharacter's instances ma equip it.
 - isPlayableCharacter() method, returns false if it's an enemy instance, true otherwise. It's used by the
 waitTurn() method. It will be also used in future implementations.
-- Equals() and hashcode() methods have a more suitable implementation depending on the class, following the
-equals(O1) == equals(O2) <=> hashcode(O1) == hashcode(O2) equivalence.
+- Equals() and hashcode() methods have a more suitable implementation depending on the class, complying with the
+equals(O1) == equals(O2) <=> hashcode(O1) == hashcode(O2) equivalence. Characters are equal if they share the same
+name, hp, atk in case of enemies, def, weight in case of enemies, equipped weapon in case of playable characters and
+class. 
 
 The test classes, as said before, follow a hierarchy too. For characters, it consists on an AbstractCharacterTest
 test class that contains the testing methods of the common behavior for all characters, such as waiting for their
@@ -114,9 +118,8 @@ On a side note, the testing takes some time since the waitTurnTest() method dela
 repetition adding more time to it. Aside from that, the rest of the tests are pretty straightforward, consisting mostly on
 constructors and equals/hashcode tests.
 
-There are, of course, a set of test classes for the weapons of the game, acting in a similar way to the character's testing
-classes explained above.
-
+Lastly, there are, of course, a set of test classes for the model's weapons, built in a similar way to the character's testing
+classes explained before. They are pretty straightforwad too, so it won't be necessary to explain further.
 
 # Deployment
 
@@ -130,7 +133,7 @@ For the versions available, see the [tags on this repository](https://github.com
 # Authors
 
 * **Ignacio Slater** - *Initial work* - [islaterm](https://github.com/islaterm)
-* **Rodrigo G. Oportot** - *Student work* - [dodii](https://github.com/dodii)
+* **Rodrigo G. Oportot** - *Student's work* - [dodii](https://github.com/dodii)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
@@ -141,6 +144,6 @@ See also the list of [contributors](https://github.com/your/project/contributors
 This work is licensed under a 
 [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
 
-# Thanks to:
+# Thanks to
 - Ephyy
 
