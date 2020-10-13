@@ -68,11 +68,14 @@ weapons (Axe, Sword, etc.).
 are different from playable characters, and inside those, common characters are different from mage ones.
 - An asbtract entity for mages and concrete classes for Black and White Mages, since there aren't "untyped"
 mages. Also an interface IMageCharacter associated to them.
-- As supposed, PlayerCharacter is enough to associate with it the creation of common-class characters 
+- As supposed, PlayerCharacter is enough to associate it with the creation of common-class characters 
 instances, since there aren't any specializes treats to program for those classes yet. When a common class
-character is instanced, it will have the ICommonCharacter interface implemented, but it will remain solely as
-a placeholder for now. Common class characters will be instanced by their own classes (e.g Knight dodi = new 
-Knight(...)) but there is no problem (until now) if they are instanced as PlayerCharacter' class.
+character is instanced, it will have the ICommonCharacter interface implemented, nonetheless it will remain solely
+as a placeholder for now. Common class characters will be instanced by their own classes (e.g Knight dodi = new 
+Knight(...)) but there shouldn't be a problem (until now) if they are instanced as PlayerCharacter' class, like
+it's done on the testing classes. By convention, they will always be instanced, ingame, as its most particular 
+instance.
+
   
 
 ### Partial homework #2
