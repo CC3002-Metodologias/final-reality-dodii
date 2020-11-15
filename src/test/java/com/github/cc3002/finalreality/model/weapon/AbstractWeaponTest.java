@@ -39,20 +39,20 @@ public class AbstractWeaponTest {
   /**
    * Aux switch method to create particular instances of IWeapons.
    * Used mostly for efficient and faster creation of objects.
-   * @param type WeaponType
+   * @param weaponName
    * @return an IWeapon instance of a weapon with the static stats parameters.
-   */
-  protected IWeapon getIWeapon(@NotNull WeaponType type) {
-    switch (type) {
-      case AXE:
+  */
+  protected IWeapon getIWeapon(@NotNull String weaponName) {
+    switch (weaponName) {
+      case AXE_NAME:
         return new Axe(AXE_NAME, DAMAGE, WEIGHT);
-      case BOW:
+      case BOW_NAME:
         return new Bow(BOW_NAME, DAMAGE, WEIGHT);
-      case KNIFE:
+      case KNIFE_NAME:
         return new Knife(KNIFE_NAME, DAMAGE, WEIGHT);
-      case STAFF:
+      case STAFF_NAME:
         return new Staff(STAFF_NAME, DAMAGE, MAGIC_DAMAGE, WEIGHT);
-      case SWORD:
+      case SWORD_NAME:
         return new Sword(SWORD_NAME, DAMAGE, WEIGHT);
       default:
         return new NullWeapon();
@@ -67,22 +67,22 @@ public class AbstractWeaponTest {
   public void setUp() {
     testWeapons = new ArrayList<>();
 
-    testAxe = getIWeapon(WeaponType.AXE);
+    testAxe = getIWeapon(AXE_NAME);
     testWeapons.add(testAxe);
 
-    testBow = getIWeapon(WeaponType.BOW);
+    testBow = getIWeapon(BOW_NAME);
     testWeapons.add(testBow);
 
-    testKnife = getIWeapon(WeaponType.KNIFE);
+    testKnife = getIWeapon(KNIFE_NAME);
     testWeapons.add(testKnife);
 
-    testStaff = getIWeapon(WeaponType.STAFF);
+    testStaff = getIWeapon(STAFF_NAME);
     testWeapons.add(testStaff);
 
-    testSword = getIWeapon(WeaponType.SWORD);
+    testSword = getIWeapon(SWORD_NAME);
     testWeapons.add(testSword);
 
-    testNull = getIWeapon(WeaponType.NULL);
+    testNull = getIWeapon("Null Weapon");
     testWeapons.add(testNull);
 
   }
@@ -108,7 +108,6 @@ public class AbstractWeaponTest {
 
     assertEquals(weapon, other);
     assertEquals(weapon.hashCode(), other.hashCode());
-
   }
 
   /**
@@ -161,7 +160,7 @@ public class AbstractWeaponTest {
     checkNotEquals(expectedBow, testStaff);
     checkNotEquals(expectedBow, testSword);
     checkNotEquals(expectedBow, testNull);
-    checkNotEquals(aux_Axe, expectedBow);
+    checkNotEquals(aux_Bow, expectedBow);
 
     /** Knife **/
     checkEquals(expectedKnife, testKnife);
@@ -187,7 +186,7 @@ public class AbstractWeaponTest {
     checkNotEquals(expectedSword, testStaff);
     checkNotEquals(expectedSword, testNull);
 
-    /** Null Weapon**/
+    /** Null Weapon **/
     checkEquals(expectedNull, testNull);
     checkNotEquals(expectedNull, testAxe);
     checkNotEquals(expectedNull, testBow);

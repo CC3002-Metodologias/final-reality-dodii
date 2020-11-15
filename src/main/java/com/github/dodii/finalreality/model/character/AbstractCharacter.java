@@ -1,15 +1,10 @@
 package com.github.dodii.finalreality.model.character;
 
-import com.github.dodii.finalreality.model.character.enemycharacters.Enemy;
-import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
-import com.github.dodii.finalreality.model.character.playablecharacters.PlayerCharacter;
-import com.github.dodii.finalreality.model.weapon.IWeapon;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.github.dodii.finalreality.model.weapon.NullWeapon;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -22,12 +17,12 @@ public abstract class AbstractCharacter implements ICharacter {
 
   /** stats **/
   private int hp;
+  private int currentHP;
   private int def;
 
   private final BlockingQueue<ICharacter> turnsQueue;
   private final String name;
   private ScheduledExecutorService scheduledExecutor;
-  private final CharacterClass characterClass;
 
   /**
    * Creates a character
@@ -35,16 +30,14 @@ public abstract class AbstractCharacter implements ICharacter {
    * @param name the name of the character.
    * @param hp the hp of the character.
    * @param def the defense of the character.
-   * @param characterClass the class of the character.
    */
   protected AbstractCharacter(@NotNull String name, final int hp, final int def,
-                              CharacterClass characterClass,
                               @NotNull BlockingQueue<ICharacter> turnsQueue) {
     this.turnsQueue = turnsQueue;
     this.name = name;
     this.hp = hp;
+    this.currentHP = hp;
     this.def = def;
-    this.characterClass = characterClass;
   }
 
   /**
@@ -90,24 +83,63 @@ public abstract class AbstractCharacter implements ICharacter {
   public int getHP() { return hp; }
 
   /**
+   * Returns the current HP of the character.
+   */
+  @Override
+  public int getCurrentHP() {
+    return currentHP;
+  }
+
+  /**
+   * Changes the current HP value of the character.
+   * @param newHP the value to alter the current HP.
+   */
+  @Override
+  public void setCurrentHP(int newHP) {
+      currentHP = Math.max(0, Math.min(newHP, getHP()));
+  }
+
+  /**
+   * @return true if the unit has 0 HP.
+   */
+  public boolean isKO() {
+    return getCurrentHP() == 0;
+  }
+
+  /**
    * @return the defense of the character.
    */
   @Override
   public int getDef() { return def; }
 
   /**
-   * @return the class type of the character.
-   */
-  @Override
-  public CharacterClass getCharacterClass() {
-    return characterClass;
-  }
-
-  /**
    * @return true if the character it's an instance of a playable one.
    */
   @Override
   public abstract boolean isPlayableCharacter();
+
+  /**
+   * Attack method
+   * @param character the target of the attack
+   */
+  @Override
+  public void attack(ICharacter character) {
+
+    //edge-conditions
+    if(!(this.isKO() || character.isKO())) {
+      int output = this.calculateAttack();
+      //receive Attack
+    }
+    //else can't attack
+  }
+
+  /**
+   * Calculates the output damage the character does before
+   * considering the target's defense.
+   * Has a different implementation depending on the subclass.
+   * @return Output damage.
+   */
+  public abstract int calculateAttack();
 
   /**
    * Returns the hashcode of the character.

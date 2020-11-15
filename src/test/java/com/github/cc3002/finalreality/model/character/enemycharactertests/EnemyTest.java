@@ -2,9 +2,6 @@ package com.github.cc3002.finalreality.model.character.enemycharactertests;
 
 import com.github.cc3002.finalreality.model.character.AbstractCharacterTest;
 import com.github.dodii.finalreality.model.character.enemycharacters.Enemy;
-import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
-import com.github.dodii.finalreality.model.character.playablecharacters.PlayerCharacter;
-import com.github.dodii.finalreality.model.character.playablecharacters.common.KnightCharacter;
 import com.github.dodii.finalreality.model.character.playablecharacters.common.ThiefCharacter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
@@ -32,6 +29,16 @@ class EnemyTest extends AbstractCharacterTest {
     super.setUp();
     testCharacters.add(new Enemy(ENEMY_NAME, 10, ATTACK_DAMAGE, DEFENSE,
             WEIGHT, turns));
+  }
+
+  /**
+   * Tests the HP related methods by calling the super class checkCurrentHP()
+   * method.
+   */
+  @Override
+  @RepeatedTest(10)
+  public void testHP() {
+    checkCurrentHP(testCharacters.get(0));
   }
 
   /**
@@ -83,5 +90,21 @@ class EnemyTest extends AbstractCharacterTest {
     assertFalse(testCharacters.get(0).isPlayableCharacter());
     assertFalse((new Enemy("Test Enemy", 5, ATTACK_DAMAGE, DEFENSE,
             WEIGHT, turns)).isPlayableCharacter());
+  }
+
+  /**
+   * attack method test for enemy objects
+   */
+  @Override
+  public void attackTest() {
+
+  }
+
+  /**
+   * calculateDamage method test for enemy objects.
+   */
+  @Override
+  public void calculateDamageTest() {
+
   }
 }

@@ -1,8 +1,7 @@
 package com.github.dodii.finalreality.model.character.playablecharacters.mage;
 
 import com.github.dodii.finalreality.model.character.ICharacter;
-import com.github.dodii.finalreality.model.character.playablecharacters.PlayerCharacter;
-import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
+import com.github.dodii.finalreality.model.character.playablecharacters.AbstractPlayerCharacter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -14,7 +13,7 @@ import java.util.concurrent.BlockingQueue;
  * @author Ignacio Slater Muñoz.
  * @author Rodrigo Oportot.
  */
-public abstract class AbstractMageCharacter extends PlayerCharacter implements IMageCharacter {
+public abstract class AbstractMageCharacter extends AbstractPlayerCharacter implements IMageCharacter {
 
     private int mana;
 
@@ -26,12 +25,10 @@ public abstract class AbstractMageCharacter extends PlayerCharacter implements I
      * @param def            the character's def.
      * @param mana           the character's mana.
      * @param turnsQueue     the queue with the characters waiting for their turn.
-     * @param characterClass the class of the mage.
      */
     public AbstractMageCharacter(@NotNull String name, final int hp, final int def, final int mana,
-                                 CharacterClass characterClass,
                                  @NotNull BlockingQueue<ICharacter> turnsQueue) {
-        super(name, hp, def, characterClass, turnsQueue);
+        super(name, hp, def, turnsQueue);
         this.mana = mana;
     }
 
@@ -45,13 +42,10 @@ public abstract class AbstractMageCharacter extends PlayerCharacter implements I
     /**
      * Returns the hashcode of the character.
      * A pair of mages have the same hashcode if they share
-     * the same name, hp, def, mana, equipped weapon and class.
+     * the same name, hp, def, mana, equipped weapon and its custom parameter.
      */
     @Override
-    public int hashCode() {
-        return Objects.hash(getName(), getHP(), getDef(),
-                getMana(), getEquippedWeapon(), getCharacterClass());
-    }
+    public abstract int hashCode();
 
     /**
      * Compares two mage characters.
@@ -59,20 +53,5 @@ public abstract class AbstractMageCharacter extends PlayerCharacter implements I
      * @return true if both are equal.
      */
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof IMageCharacter)) {
-            return false;
-        }
-
-        final IMageCharacter mage = (IMageCharacter) o;
-        return getName().equals(mage.getName()) &&
-                getHP() == mage.getHP() &&
-                getDef() == mage.getDef() &&
-                getCharacterClass() == mage.getCharacterClass() &&
-                getEquippedWeapon().equals(mage.getEquippedWeapon()) &&
-                getMana() == mage.getMana();
-    }
+    public abstract boolean equals(final Object o);
 }

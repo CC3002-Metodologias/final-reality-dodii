@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ignacio Slater Muñoz.
  * @author Rodrigo Oportot.
  */
-public class PlayerCharacter extends AbstractCharacter implements IPlayerCharacter {
+public abstract class AbstractPlayerCharacter extends AbstractCharacter implements IPlayerCharacter {
 
   private IWeapon equippedWeapon = new NullWeapon();
 
@@ -30,13 +30,10 @@ public class PlayerCharacter extends AbstractCharacter implements IPlayerCharact
    *     the character's def.
    * @param turnsQueue
    *     the queue with the characters waiting for their turn
-   * @param characterClass
-   *     the class of this character
    */
-  public PlayerCharacter(@NotNull String name, final int hp, final int def,
-                         final CharacterClass characterClass,
-                         @NotNull BlockingQueue<ICharacter> turnsQueue) {
-    super(name, hp, def, characterClass, turnsQueue);
+  public AbstractPlayerCharacter(@NotNull String name, final int hp, final int def,
+                                 @NotNull BlockingQueue<ICharacter> turnsQueue) {
+    super(name, hp, def, turnsQueue);
   }
 
   /**
@@ -45,6 +42,15 @@ public class PlayerCharacter extends AbstractCharacter implements IPlayerCharact
   @Override
   public IWeapon getEquippedWeapon() {
     return equippedWeapon;
+  }
+
+  /**
+   * Protected method to set a weapon. It's called from
+   * equip().
+   * @param weapon
+   */
+  protected void setEquippedWeapon(IWeapon weapon) {
+    this.equippedWeapon = weapon;
   }
 
   /**
@@ -58,14 +64,10 @@ public class PlayerCharacter extends AbstractCharacter implements IPlayerCharact
 
   /**
    * Equips a certain weapon to a character.
-   * It checks by double dispatch if the weapon can actually be
-   * equipped by the character, depending on its class.
    * @param weapon weapon to be equipped.
    */
   @Override
-  public void equip(IWeapon weapon) {
-      this.equippedWeapon = weapon;
-  }
+  public abstract void equip(IWeapon weapon);
 
   /**
    * @return true if it's a playable character.
@@ -78,13 +80,11 @@ public class PlayerCharacter extends AbstractCharacter implements IPlayerCharact
   /**
    * Returns the hashcode of the character.
    * A pair of playable characters have an equivalent hashcode if
-   * they share the same name, hp, def, equipped weapon and its class.
+   * they share the same name, hp, def, equipped weapon and a custom
+   * parameter defined on every subclass.
    */
   @Override
-  public int hashCode() {
-    return Objects.hash(getName(), getHP(), getDef(), getEquippedWeapon(),
-            getCharacterClass());
-  }
+  public abstract int hashCode();
 
   /**
    * Compares two characters.
@@ -92,19 +92,5 @@ public class PlayerCharacter extends AbstractCharacter implements IPlayerCharact
    * @return true if both are equal.
    */
   @Override
-  public boolean equals(final Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof IPlayerCharacter)) {
-      return false;
-    }
-
-    final IPlayerCharacter playableChar = (IPlayerCharacter) o;
-    return getName().equals(playableChar.getName()) &&
-            getHP() == playableChar.getHP() &&
-            getDef() == playableChar.getDef() &&
-            getEquippedWeapon().equals(playableChar.getEquippedWeapon()) &&
-            getCharacterClass() == playableChar.getCharacterClass();
-  }
+  public abstract boolean equals(final Object o);
 }

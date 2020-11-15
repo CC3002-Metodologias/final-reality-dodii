@@ -24,11 +24,6 @@ public interface IWeapon {
     int getWeight();
 
     /**
-     * @return the type of the weapon.
-     */
-    WeaponType getType();
-
-    /**
      * @return the hashcode
      */
     int hashCode();

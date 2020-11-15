@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
  * @author Ignacio Slater Muñoz.
  * @author Rodrigo Oportot.
  */
-public class AbstractMageCharacterTest extends PlayerCharacterTest {
+public class AbstractMageCharacterTest extends AbstractPlayerCharacterTest {
 
     protected WhiteMageCharacter whiteMage;
     protected BlackMageCharacter blackMage;
@@ -49,7 +49,17 @@ public class AbstractMageCharacterTest extends PlayerCharacterTest {
                 blackMage,
                 new BlackMageCharacter("Different Black Mage", 8, DEFENSE, MANA, turns),
                 enemy);
+    }
 
+    /**
+     * Tests the HP related methods by calling the super class checkCurrentHP()
+     * method.
+     */
+    @Override
+    @RepeatedTest(5)
+    public void testHP() {
+        checkCurrentHP(blackMage);
+        checkCurrentHP(whiteMage);
     }
 
     /**
@@ -75,5 +85,16 @@ public class AbstractMageCharacterTest extends PlayerCharacterTest {
 
         checkWaitTurn(blackMage);
         turns.clear();
+    }
+
+    /**
+     * Test for the equip and getEquippedWeapon method. This requires instancing
+     * the character as IPlayerCharacters and not as an ICharacter type, since the last one
+     * doesn't have the equip() and getEquippedWeapon() methods.
+     * It tests the common classes.
+     */
+    @Override
+    public void equipWeaponTest() {
+        super.weaponSetUp();
     }
 }

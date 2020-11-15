@@ -1,7 +1,7 @@
 package com.github.cc3002.finalreality.model.character.playablecharactertests;
 
 import com.github.dodii.finalreality.model.character.enemycharacters.Enemy;
-import com.github.dodii.finalreality.model.character.playablecharacters.PlayerCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.AbstractPlayerCharacter;
 import com.github.dodii.finalreality.model.character.playablecharacters.common.EngineerCharacter;
 import com.github.dodii.finalreality.model.character.playablecharacters.common.ICommonCharacter;
 import com.github.dodii.finalreality.model.character.playablecharacters.common.KnightCharacter;
@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * Set of tests for the Common characters of the game.
@@ -22,7 +25,7 @@ import java.util.List;
  * @author Ignacio Slater Muñoz.
  * @author Rodrigo Oportot.
  */
-public class CommonCharacterTest extends PlayerCharacterTest {
+public class CommonCharacterTest extends AbstractPlayerCharacterTest {
 
     private KnightCharacter testKnight;
     private ThiefCharacter testThief;
@@ -38,18 +41,41 @@ public class CommonCharacterTest extends PlayerCharacterTest {
 
         testCommonChars = new ArrayList<>();
 
-        testKnight = new KnightCharacter("Test Knight", 10, 5, turns);
-        testEngineer = new EngineerCharacter("Test Engineer", 10, 5, turns);
-        testThief = new ThiefCharacter("Test Thief", 10, 5, turns);
+        testKnight = new KnightCharacter(KNIGHT_NAME, 10, 5, turns);
+        testEngineer = new EngineerCharacter(ENGINEER_NAME, 10, 5, turns);
+        testThief = new ThiefCharacter(THIEF_NAME, 10, 5, turns);
 
         testCommonChars.add(testKnight);
         testCommonChars.add(testEngineer);
         testCommonChars.add(testThief);
     }
 
+    @Override
+    public void attackTest() {
+
+    }
+
+    @Override
+    public void calculateDamageTest() {
+
+    }
+
+    /**
+     * Test for the equip and getEquippedWeapon method. This requires instancing
+     * the character as IPlayerCharacters and not as an ICharacter type, since the last one
+     * doesn't have the equip() and getEquippedWeapon() methods.
+     * It tests the common classes.
+     */
+    @Override
+    @Test
+    public void equipWeaponTest() {
+        super.weaponSetUp();
+
+    }
+
     /**
      * Constructor test, checks one by one the instances of the three common-class'
-     * characters above.
+     * above characters.
      */
     @Override
     @Test
@@ -57,11 +83,10 @@ public class CommonCharacterTest extends PlayerCharacterTest {
        Enemy testEnemy = new Enemy("Enemy", 10, 8, 5, 10, turns);
 
        for(var commonChar : testCommonChars) {
-           checkConstruction(new PlayerCharacter(commonChar.getName(), commonChar.getHP(),
-                   commonChar.getDef(), commonChar.getCharacterClass(), turns),
+           checkConstruction(getSpecificIPlayerCharacter(commonChar.getName(), commonChar.getHP(),
+                   commonChar.getDef(), turns),
                    commonChar,
-                   new PlayerCharacter("Same Class", 5, 4,
-                           commonChar.getCharacterClass(), turns),
+                   getSpecificIPlayerCharacter(commonChar.getName(), 5, 4, turns),
                    testEnemy);
        }
     }

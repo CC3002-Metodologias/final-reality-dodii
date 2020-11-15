@@ -21,4 +21,5 @@ public interface IPlayerCharacter extends ICharacter {
      * Equips a weapon to the playable character.
      */
     void equip(IWeapon weapon);
+    
 }

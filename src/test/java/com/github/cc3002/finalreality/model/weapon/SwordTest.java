@@ -1,8 +1,6 @@
 package com.github.cc3002.finalreality.model.weapon;
 
-import com.github.dodii.finalreality.model.weapon.Axe;
 import com.github.dodii.finalreality.model.weapon.Sword;
-import com.github.dodii.finalreality.model.weapon.WeaponType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

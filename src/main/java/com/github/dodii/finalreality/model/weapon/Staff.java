@@ -10,6 +10,7 @@ import java.util.Objects;
  */
 public class Staff extends AbstractWeapon {
 
+    private static String CUSTOM_PARAMETER = "St";
     private final int magicDamage;
 
     /**
@@ -18,7 +19,7 @@ public class Staff extends AbstractWeapon {
      *
      */
     public Staff(final String name, final int dmg, final int magicDamage, final int weight) {
-        super(name, dmg, weight, WeaponType.STAFF);
+        super(name, dmg, weight);
         this.magicDamage = magicDamage;
     }
 
@@ -34,7 +35,8 @@ public class Staff extends AbstractWeapon {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDmg(), getMagicDamage(), getWeight(), getType());
+        return Objects.hash(getName(), getDmg(), getMagicDamage(), getWeight(),
+                CUSTOM_PARAMETER);
     }
 
     /**
@@ -53,7 +55,6 @@ public class Staff extends AbstractWeapon {
         return getDmg() == weapon.getDmg() &&
                 getMagicDamage() == weapon.getMagicDamage() &&
                 getWeight() == weapon.getWeight() &&
-                getName().equals(weapon.getName()) &&
-                getType() == weapon.getType();
+                getName().equals(weapon.getName());
     }
 }
