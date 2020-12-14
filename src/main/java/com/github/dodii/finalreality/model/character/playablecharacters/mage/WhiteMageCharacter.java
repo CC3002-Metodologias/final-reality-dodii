@@ -1,9 +1,10 @@
 package com.github.dodii.finalreality.model.character.playablecharacters.mage;
 
 import com.github.dodii.finalreality.model.character.ICharacter;
-import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
+import com.github.dodii.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -13,6 +14,9 @@ import java.util.concurrent.BlockingQueue;
  * @author Rodrigo Oportot.
  */
 public class WhiteMageCharacter extends AbstractMageCharacter {
+
+    private static final String CUSTOM_PARAMETER = "W";
+
     /**
      * Creates a new mage character.
      *
@@ -24,6 +28,39 @@ public class WhiteMageCharacter extends AbstractMageCharacter {
      */
     public WhiteMageCharacter(@NotNull String name, int hp, int def, int mana,
                               @NotNull BlockingQueue<ICharacter> turnsQueue) {
-        super(name, hp, def, mana, CharacterClass.WHITE_MAGE, turnsQueue);
+        super(name, hp, def, mana, turnsQueue);
+    }
+
+    /**
+     * Returns the hashcode of the character.
+     * A pair of mages have the same hashcode if they share
+     * the same name, hp, def, mana, equipped weapon and its custom parameter.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getHP(), getDef(),
+                getMana(), getEquippedWeapon(), CUSTOM_PARAMETER);
+    }
+
+    /**
+     * Compares two mage characters.
+     * @param o character to compare.
+     * @return true if both are equal.
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof WhiteMageCharacter)) {
+            return false;
+        }
+
+        final WhiteMageCharacter mage = (WhiteMageCharacter) o;
+        return getName().equals(mage.getName()) &&
+                getHP() == mage.getHP() &&
+                getDef() == mage.getDef() &&
+                getEquippedWeapon().equals(mage.getEquippedWeapon()) &&
+                getMana() == mage.getMana();
     }
 }

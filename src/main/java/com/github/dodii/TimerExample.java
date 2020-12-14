@@ -1,13 +1,9 @@
 package com.github.dodii;
 
 import com.github.dodii.finalreality.model.character.ICharacter;
-import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
-import com.github.dodii.finalreality.model.character.playablecharacters.PlayerCharacter;
 import com.github.dodii.finalreality.model.character.playablecharacters.common.ThiefCharacter;
-import com.github.dodii.finalreality.model.weapon.Axe;
-import com.github.dodii.finalreality.model.weapon.IWeapon;
 import com.github.dodii.finalreality.model.weapon.Knife;
-import com.github.dodii.finalreality.model.weapon.WeaponType;
+
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

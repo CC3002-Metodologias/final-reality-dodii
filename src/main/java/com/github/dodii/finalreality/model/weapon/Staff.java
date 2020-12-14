@@ -1,5 +1,11 @@
 package com.github.dodii.finalreality.model.weapon;
 
+import com.github.dodii.finalreality.model.character.playablecharacters.common.EngineerCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.KnightCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.ThiefCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.mage.IMageCharacter;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 /**
@@ -10,6 +16,7 @@ import java.util.Objects;
  */
 public class Staff extends AbstractWeapon {
 
+    private static final String CUSTOM_PARAMETER = "St";
     private final int magicDamage;
 
     /**
@@ -18,7 +25,7 @@ public class Staff extends AbstractWeapon {
      *
      */
     public Staff(final String name, final int dmg, final int magicDamage, final int weight) {
-        super(name, dmg, weight, WeaponType.STAFF);
+        super(name, dmg, weight);
         this.magicDamage = magicDamage;
     }
 
@@ -30,11 +37,48 @@ public class Staff extends AbstractWeapon {
     }
 
     /**
+     * Aux method for the double dispatch equip implementation.
+     * @param engineer character to equip weapon
+     */
+    @Override
+    public void equipToEngineer(EngineerCharacter engineer) {
+        //doesn't equip//
+    }
+
+    /**
+     * Aux method for the double dispatch equip implementation
+     * @param knight character to equip weapon
+     */
+    @Override
+    public void equipToKnight(KnightCharacter knight) {
+        //doesn't equip//
+    }
+
+    /**
+     * Aux method for the double dispatch equip implementation
+     * @param thief character to equip weapon
+     */
+    @Override
+    public void equipToThief(ThiefCharacter thief) {
+        //doesn't equip//
+    }
+
+    /**
+     * Aux method for the double dispatch equip implementation
+     * @param mage character to equip weapon
+     */
+    @Override
+    public void equipToMage(@NotNull IMageCharacter mage) {
+        mage.receiveWeapon(this);
+    }
+
+    /**
      * @return the hashcode
      */
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDmg(), getMagicDamage(), getWeight(), getType());
+        return Objects.hash(getName(), getDmg(), getMagicDamage(), getWeight(),
+                CUSTOM_PARAMETER);
     }
 
     /**
@@ -53,7 +97,6 @@ public class Staff extends AbstractWeapon {
         return getDmg() == weapon.getDmg() &&
                 getMagicDamage() == weapon.getMagicDamage() &&
                 getWeight() == weapon.getWeight() &&
-                getName().equals(weapon.getName()) &&
-                getType() == weapon.getType();
+                getName().equals(weapon.getName());
     }
 }

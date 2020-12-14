@@ -1,5 +1,10 @@
 package com.github.dodii.finalreality.model.weapon;
 
+import com.github.dodii.finalreality.model.character.playablecharacters.common.EngineerCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.KnightCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.ThiefCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.mage.IMageCharacter;
+
 import java.util.Objects;
 
 /**
@@ -13,14 +18,11 @@ public abstract class AbstractWeapon implements IWeapon {
     private final String name;
     private final int dmg;
     private final int weight;
-    private final WeaponType type;
 
-    protected AbstractWeapon(final String name, final int dmg, final int weight,
-                             final WeaponType type) {
+    protected AbstractWeapon(final String name, final int dmg, final int weight) {
         this.name = name;
         this.dmg = dmg;
         this.weight = weight;
-        this.type = type;
     }
 
     /**
@@ -48,37 +50,45 @@ public abstract class AbstractWeapon implements IWeapon {
     }
 
     /**
-     * @return the type of the weapon.
+     * Aux method for the double dispatch equip implementation.
+     * @param engineer character to equip weapon
      */
     @Override
-    public WeaponType getType() {
-        return type;
-    }
+    public abstract void equipToEngineer(EngineerCharacter engineer);
 
     /**
+     * Aux method for the double dispatch equip implementation
+     * @param knight character to equip weapon
+     */
+    @Override
+    public abstract void equipToKnight(KnightCharacter knight);
+
+    /**
+     * Aux method for the double dispatch equip implementation
+     * @param thief character to equip weapon
+     */
+    @Override
+    public abstract void equipToThief(ThiefCharacter thief);
+
+    /**
+     * Aux method for the double dispatch equip implementation
+     * @param mage character to equip weapon
+     */
+    @Override
+    public abstract void equipToMage(IMageCharacter mage);
+
+    /**
+     * Every weapon will have a different extra parameter to generate
+     * its hashcode.
      * @return the hashcode
      */
     @Override
-    public int hashCode() {
-        return Objects.hash(getName(), getDmg(), getWeight(), getType());
-    }
+    public abstract int hashCode();
 
     /**
      * @param o the object (usually an IWeapon instance of a weapon).
      * @return true if both objects are equal.
      */
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof IWeapon)) {
-            return false;
-        }
-        final IWeapon weapon = (IWeapon) o;
-        return getDmg() == weapon.getDmg() &&
-                getWeight() == weapon.getWeight() &&
-                getName().equals(weapon.getName()) &&
-                getType() == weapon.getType();
-    }
+    public abstract boolean equals(final Object o);
 }

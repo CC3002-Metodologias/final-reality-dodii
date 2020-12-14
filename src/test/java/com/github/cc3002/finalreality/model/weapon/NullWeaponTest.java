@@ -24,7 +24,7 @@ public class NullWeaponTest extends AbstractWeaponTest {
     @BeforeEach
     public void setUp() {
         super.setUp();
-        testNull = new NullWeapon();
+        testNull = NullWeapon.uniqueInstance();
     }
 
     /**
@@ -32,9 +32,8 @@ public class NullWeaponTest extends AbstractWeaponTest {
      */
     @Test
     public void NullWeaponConstructorTest() {
-        NullWeapon anotherNull = new NullWeapon();
+        NullWeapon anotherNull = NullWeapon.uniqueInstance();
 
-        checkEquals(anotherNull, testNull);
         checkNotEquals(testWeapons.get(0), testNull);
 
         /** Checks if the weapons are in the list of the super class **/

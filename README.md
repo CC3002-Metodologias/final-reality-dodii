@@ -121,6 +121,118 @@ constructors and equals/hashcode tests.
 Lastly, there are, of course, a set of test classes for the model's weapons, built in a similar way to the character's testing
 classes explained before. They are pretty straightforwad too, so it won't be necessary to explain further.
 
+### Partial homework #3
+Wasn't commited.
+
+### Partial homework #4
+The design was changed a bit following the feedback from T1's observations. PlayerCharacter evolved into AbstractPlayerCharacter,
+since it was a necessary change to implement the new equip(), equals() and hashcode() methods that require specific instructions
+depending on the subclass. In detail, hashcodes methods make use of a new string parameter (different for every subclass), so the
+result when comparing objects from different classes keeps being coherent. By example, when comparing a Knight with an Engineer, they
+may have the same name, equipped weapon and stats, but their unique string parameter makes them different, so comparing the hashcodes of
+both characters' still returns false.
+Tests were also changed, because it's not possible to instance an AbstractPlayerCharacter object anymore.
+The getType() and getCharacterClass() methods, related to weapons and characters respectively, were deleted since they can't be
+part of a good design. This had, as a consequence, the elimination of both enum classes. Every class/object "already knows" its type, and 
+Double Dispatch methods will make use of this in the next version of the program.
+
+By last, there are some things to adjust for the next versions: the total coverage of the tests and a correct implementation of attack/equip methods.
+
+### Entrega 2 (de ahora en adelante será en español, dado que es necesario priorizar el tiempo a utilizar)
+Respecto al modelo, se hicieron pequeñas adecuaciones:
+- Se añade método isMage() que retorna true o false, dependiendo de si el character es mago o no.
+- Se añaden atributos propertyChangeSupport para los respectivos métodos que ligan los handlers a las notificaciones. En particular, se añaden los eventos 
+knockOutEvent, que notifica al handler knockOutHandler cuando una unidad es derrotada; el evento timerEvent que notifica al handler TimerHandler sobre 
+el momento en que el temporizador ejecutado por el método waitTurn() termina, y por último, el evento endTurnEvent, que notifica al handler endTurnHandler 
+cuando un personaje acaba de atacar y termina su turno.
+- Método addToQueue() implementa la notificación "timerEvent.firePropertyChange" que notifica a su handler cuando el temporizador termina.
+- Método attack() implementa la notificación "endTurnEvent.firePropertyChange" que notifica a su handler cuando el personaje ataca y termina su turno.
+- Método receiveAttack() implementa la notificación "knockedOutEevent.firePropertyChange" que notifica a su handler cuando el personaje muere.
+- Null Weapon implementa singleton pattern.
+- El equipamiento de armas implementa double dispatch, con el fin de respetar los principios SOLID. La clase AbstractPlayerCharacter implementa el método equip(),
+definido particularmente en cada subclase. Por ejemplo, para la clase EngineerCharacter, el método es implementado de la siguiente forma:
+
+> @Override
+    public void equip(@NotNull IWeapon weapon) {
+        weapon.equipToEngineer(this);
+    }
+
+Como se puede ver, equip() llama al método equipToEngineer (colocando al personaje ingeniero como argumento) del arma en cuestión. Dicho método está definido en
+cada subclase de la jerarquía originada en AbstractWeapon. Por ejemplo, en la clase Axe, está implementado de la siguiente forma:
+
+
+> @Override
+    public void equipToEngineer(@NotNull EngineerCharacter engineer) {
+        engineer.receiveWeapon(this);
+    }
+
+Donde se ve que el arma es recibida por el personaje mediante el método receiveWeapon(IWeapon weapon), siendo efectivamente equipada. Por el contrario, si 
+EngineerCharacterse hubiese intentado equipar un objeto de la clase Staff, esto no habría resultado, dado que el método equipToEngineer llamaría a receiveWeapon
+de la clase Staff, la cual no permitiría equipar dicha arma a tal clase de personaje. Como nota final, para la clase ThiefCharacter fue considerado el error en
+el enunciado descrito por el auxiliar, por lo que dicha clase puede equipar objetos Knife, Sword y Bow.
+- Para el ataque entre personajes, el método attack(ICharacter character) define interacciones de combate entre todos los personajes del juego, habilitando friendly
+fire entre personajes comandados por el jugador o entre enemigos. Esto con el fin de programar código mucho más extensible a futuro. El método attack() es descrito en AbstractCharacter, donde asegura que las condiciones de combate sean suficientes (que los personajes no estén muertos de antemano ni que se ataquen a si mismos), luego
+calcula el ataque respectivo con calculateAttack(), método abstracto implementado concretamente en Enemy y en AbstractPlayerCharacter. En Enemy considera el stat de atk
+del objeto, y en AbstractPlayerCharacter, el stat de atk del arma equipada. Por último, se llama al método receiveAttack(), implementado directamente en AbstractCharacter,
+donde se calcula la diferencia entre el daño recibido y la defensa del personaje.
+
+Respecto al controlador del modelo MVC, se crea una clase Controller y otras clases auxiliares: los handlers TimerHandler, EndTurnHandler y KnockOutHandler.
+Éstos son algo autoexplicativos dada su descripción en el párrafo anterior. Entrando en los detalles del controlador:
+
+- Puede crear todo tipo de personajes y armas, con los métodos createEngineer, createEnemy, etc, recibiendo los parámetros respectivos (nombre, stats, etc). 
+En el momento de su creación, se le asignan las variables necesarias para las notificaciones del patrón observer, que será explicado profundamente más adelante.
+- Reconoce a quiénes pertenecen dichos objetos. Los personajes que no son enemigos, son guardados en una lista llamada Party. Por otro lado, los enemigos
+son guardados en una lista separada, perteneciendo a la "CPU". Por criterio del estudiante, el máximo de personajes comandados por el jugador es 4 y el máximo de
+enemigos es 8. Cada vez que un personaje es creado, se revisa que la lista respectiva permita agregar un personaje adicional si es que aún no está completa (métodos
+addCharacterToParty o addEnemyToList). De lo contrario, no lo agrega.
+- Puede conocer los stats y atributos de cada objeto creado (sus stats, armas equipadas, etc) con los métodos getAtk, getDef, etc. Puede retornar las listas de
+personajes del jugador o de enemigos. 
+- Implementa un inventario para las armas de jugador. El inventario no permite duplicados. Al momento de equipar un arma a un personaje, el controlador se asegura
+de que el arma esté disponible en el inventario (éstas son añadidas a él al momento de ser creadas). Si no lo está, no lo equipa. Cuando es equipada, la quita del
+inventario para que no pueda ser equipada al mismo tiempo por otros personajes. 
+- Puede equipar armas a los personajes del jugador.
+- Permite ataques entre personajes.
+
+La implementación de las notificaciones (observer pattern) y sus handlers es la parte más compleja. Para comenzar:
+- Fueron creados los handlers TimerHandler, KnockOutHandler y EndTurnHandler. Éstos fueron explicados más arriba. Cada uno maneja la respectiva notificación también
+explicada anteriormente. Son instanciados por el controlador, entregándose como parámetro a sí mismo.
+
+> Controller { 
+    ...
+    /* Handlers and related objects for notifications of the observer pattern */
+        private final IHandler timerHandler = new TimerHandler(this);
+        private final IHandler endTurnHandler = new EndTurnHandler(this);
+        private final IHandler knockOutHandler = new KnockOutHandler(this);
+    ... }
+
+- Éstos handlers son asignados a cada personaje creado, mediante los métodos:
+
+
+> addKOEventListener(knockOutHandler);
+  addTimerEndedEventListener(timerHandler);
+  addEndTurnEventListener(endTurnHandler);
+
+Luego de ésto, cuando reciben las notificaciones, son manejadas de la siguiente forma:
+
+- La notificación proveniente del handler KnockOutHandler es recibida por el método onKnockedOutCharacter(ICharacter knockedOutCharacter), que revisa
+si el personaje es del jugador o el enemigo. En función de ello, revisa la respectiva lista. Este método es llamado cada vez que un personaje es knockeado.
+Si la lista revisada posee todos los personajes knockeados, se llama al método victory() o defeat(), dependiendo de si la lista era la Party del jugador o 
+la de enemigos. El método victory() cambia el atributo status del juego, pasando de PLAYING a DEFEAT/VICTORY. Éste atributo actúa como indicador auxiliar
+para conocer en qué se encuentra el juego, y también fue usado para efectos de testeo. Por último, imprime en la pantalla una frase en contexto del
+juego ("ganaste" o "perdiste").
+
+- La notificación proveniente del handler EndTurnEvent es recibida por el método onTurnEnded(ICharacter character), sacando del queue al personaje en cuestión,
+y ejecutando su método waitTurn(), como describe la mecánica de turnos descrita en la sección 2.2 del enunciado de la tarea. 
+
+- Por último, la notiticación proveniente del handler TimerHandler es recibida por el método onTimerEnded(ICharacter character). De esta manera, el controlador 
+sabe que la cola ya no está vacía (para evitar programar busy-waiting), y así comience el turno del siguiente personaje, seleccionándolo de la cola.
+
+
+Hay un par de métodos no descritos en el readme (mayormente getters), que son autoexplicativos al momento de revisar el código del controlador.
+Todo lo descrito anteriormente está testeado en sus respectivas clases.
+
+Por último, también hay una clase EnemyFactory y Turn con las respectivas Phases, que serán implementadas completamente en la siguiente entrega.
+
 # Deployment
 
 Downloading/cloning the project and opening it using IntelliJ IDE, then you can run the gradle build to

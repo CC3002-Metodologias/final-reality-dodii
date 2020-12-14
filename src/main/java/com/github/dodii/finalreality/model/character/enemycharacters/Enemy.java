@@ -2,10 +2,9 @@ package com.github.dodii.finalreality.model.character.enemycharacters;
 
 import com.github.dodii.finalreality.model.character.AbstractCharacter;
 import com.github.dodii.finalreality.model.character.ICharacter;
-import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
+
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executors;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +25,7 @@ public class Enemy extends AbstractCharacter implements IEnemy {
    */
   public Enemy(@NotNull final String name, final int hp, final int atk, final int def,
                final int weight, @NotNull final BlockingQueue<ICharacter> turnsQueue) {
-    super(name, hp, def, CharacterClass.ENEMY, turnsQueue);
+    super(name, hp, def, turnsQueue);
     this.atk = atk;
     this.weight = weight;
   }
@@ -64,16 +63,26 @@ public class Enemy extends AbstractCharacter implements IEnemy {
   }
 
   /**
+   * Calculates the output damage the character does before
+   * considering the target's defense.
+   * Has a different implementation depending on the subclass.
+   * In this case, it's just the stat.
+   * @return Output damage.
+   */
+  @Override
+  public int calculateAttack() {
+    return atk;
+  }
+
+  /**
    * Returns the hashcode of the character.
    * A pair of enemies have the same hashcode if they share the same
-   * name, hp, atk, def, enemy class and weight. Sharing the same
-   * character class (enemy type) may be redundant for now, but it's better in case
-   * of future changes.
+   * name, hp, atk, def, enemy class and weight.
    */
   @Override
   public int hashCode() {
     return Objects.hash(getName(), getHP(), getAtk(), getDef(),
-            getWeight(), getCharacterClass());
+            getWeight());
   }
 
   /**
@@ -95,7 +104,6 @@ public class Enemy extends AbstractCharacter implements IEnemy {
             getHP() == enemy.getHP() &&
             getAtk() == enemy.getAtk() &&
             getDef() == enemy.getDef() &&
-            getWeight() == enemy.getWeight() &&
-            getCharacterClass() == enemy.getCharacterClass();
+            getWeight() == enemy.getWeight();
   }
 }

@@ -1,7 +1,5 @@
 package com.github.dodii.finalreality.model.character;
 
-import com.github.dodii.finalreality.model.character.playablecharacters.CharacterClass;
-
 /**
  * This represents a character from the game.
  * A character can be controlled by the player or by the CPU (an enemy).
@@ -35,19 +33,58 @@ public interface ICharacter {
   int getHP();
 
   /**
+   * Returns the current HP of the character.
+   */
+  int getCurrentHP();
+
+  /**
+   * Changes the current HP value of the character.
+   * @param value the value to alter the current HP.
+   */
+  void setCurrentHP(int value);
+
+  /**
+   * @return true if the unit has 0 HP.
+   */
+  boolean isKO();
+
+  /**
    * Returns the character's def.
    */
   int getDef();
 
   /**
-   * Returns the character's class.
-   */
-  CharacterClass getCharacterClass();
-
-  /**
    * Returns true or false depending on the character.
    */
   boolean isPlayableCharacter();
+
+  /**
+   * Returns true or false depending on the character
+   */
+  boolean isMage();
+
+  /**
+   * Attack method
+   * @param target character attacked.
+   * @return true if the attack succeeds, false otherwise.
+   */
+  boolean attack(ICharacter target);
+
+  /**
+   * Receives an attack from the opponent.
+   * It calculates the final damage as
+   * actual damage = received damage - defense.
+   * @param receivedDamage output damage of the opponent.
+   */
+  void receiveAttack(int receivedDamage);
+
+  /**
+   * Calculates the output damage the character does before
+   * considering the target's defense.
+   * Has a different implementation depending on the subclass.
+   * @return Output damage.
+   */
+  int calculateAttack();
 
   /**
    * Returns the hashcode of the character.

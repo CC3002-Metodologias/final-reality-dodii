@@ -31,7 +31,7 @@ public class AxeTest extends AbstractWeaponTest {
      */
     @Test
     public void AxeConstructorTest() {
-        super.constructorTest();
+        //super.constructorTest();
         Axe anotherAxe = new Axe("Test Axe", 15, 10);
         Axe differentAxe = new Axe("Different Axe", 12, 3);
 
