@@ -55,7 +55,7 @@ public abstract class AbstractCharacterTest {
 
   /**
    * Aux method to test getCurrentHP and isKO methods.
-   * @param character
+   * @param character character to check
    */
   protected void checkCurrentHP(@NotNull ICharacter character) {
     //full hp and 0 damage
@@ -167,15 +167,16 @@ public abstract class AbstractCharacterTest {
   public abstract void isPlayableCharacterTest();
 
   /**
-   * Attack method test
+   * Attack method test.
+   * Checks attack(), receiveAttack() and calculateAttack() methods.
    */
   @Test
   public abstract void attackTest();
 
   /**
-   * calculateDamage method test
+   * Tests the isMage method.
    */
   @Test
-  public abstract void calculateDamageTest();
+  public abstract void isMageTest();
 
 }

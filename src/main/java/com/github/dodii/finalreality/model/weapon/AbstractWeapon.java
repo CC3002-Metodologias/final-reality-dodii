@@ -1,5 +1,10 @@
 package com.github.dodii.finalreality.model.weapon;
 
+import com.github.dodii.finalreality.model.character.playablecharacters.common.EngineerCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.KnightCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.ThiefCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.mage.IMageCharacter;
+
 import java.util.Objects;
 
 /**
@@ -43,6 +48,34 @@ public abstract class AbstractWeapon implements IWeapon {
     public int getWeight() {
         return weight;
     }
+
+    /**
+     * Aux method for the double dispatch equip implementation.
+     * @param engineer character to equip weapon
+     */
+    @Override
+    public abstract void equipToEngineer(EngineerCharacter engineer);
+
+    /**
+     * Aux method for the double dispatch equip implementation
+     * @param knight character to equip weapon
+     */
+    @Override
+    public abstract void equipToKnight(KnightCharacter knight);
+
+    /**
+     * Aux method for the double dispatch equip implementation
+     * @param thief character to equip weapon
+     */
+    @Override
+    public abstract void equipToThief(ThiefCharacter thief);
+
+    /**
+     * Aux method for the double dispatch equip implementation
+     * @param mage character to equip weapon
+     */
+    @Override
+    public abstract void equipToMage(IMageCharacter mage);
 
     /**
      * Every weapon will have a different extra parameter to generate

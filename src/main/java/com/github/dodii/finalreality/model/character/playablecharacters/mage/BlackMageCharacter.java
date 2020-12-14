@@ -15,7 +15,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class BlackMageCharacter extends AbstractMageCharacter {
 
-    private static String CUSTOM_PARAMETER = "B";
+    private static final String CUSTOM_PARAMETER = "B";
 
     /**
      * Creates a new mage character.
@@ -29,16 +29,6 @@ public class BlackMageCharacter extends AbstractMageCharacter {
     public BlackMageCharacter(@NotNull String name, int hp, int def, int mana,
                               @NotNull BlockingQueue<ICharacter> turnsQueue) {
         super(name, hp, def, mana, turnsQueue);
-    }
-
-    @Override
-    public void equip(IWeapon weapon) {
-
-    }
-
-    @Override
-    public int calculateAttack() {
-        return 0;
     }
 
     /**

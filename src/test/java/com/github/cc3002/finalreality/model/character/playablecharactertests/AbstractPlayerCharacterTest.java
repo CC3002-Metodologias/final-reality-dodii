@@ -219,6 +219,11 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
     }
   }
 
+  /**
+   * Tests the isMage method.
+   */
+  @Test
+  public abstract void isMageTest();
 
   /**
    * Test for the equip and getEquippedWeapon method. This requires instancing
@@ -237,7 +242,6 @@ public abstract class AbstractPlayerCharacterTest extends AbstractCharacterTest 
     testKnife = new Knife("Test Knife", 10, 10);
     testStaff = new Staff("Test Staff", 10,5, 10);
     testSword = new Sword("Test Sword", 10, 10);
-    testNullWeapon = new NullWeapon();
-
+    testNullWeapon = NullWeapon.uniqueInstance();
   }
 }

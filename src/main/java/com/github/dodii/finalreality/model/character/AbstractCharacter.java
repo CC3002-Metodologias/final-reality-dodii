@@ -1,10 +1,12 @@
 package com.github.dodii.finalreality.model.character;
 
+import java.beans.PropertyChangeSupport;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import com.github.dodii.finalreality.controller.handlers.IHandler;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -15,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractCharacter implements ICharacter {
 
-  /** stats **/
+  /* stats */
   private int hp;
   private int currentHP;
   private int def;
@@ -23,6 +25,14 @@ public abstract class AbstractCharacter implements ICharacter {
   private final BlockingQueue<ICharacter> turnsQueue;
   private final String name;
   private ScheduledExecutorService scheduledExecutor;
+
+  /* Observer */
+  private final PropertyChangeSupport knockedOutEvent =
+          new PropertyChangeSupport(this);
+  private final PropertyChangeSupport timerEvent =
+          new PropertyChangeSupport(this);
+  private final PropertyChangeSupport endTurnEvent =
+          new PropertyChangeSupport(this);
 
   /**
    * Creates a character
@@ -38,6 +48,33 @@ public abstract class AbstractCharacter implements ICharacter {
     this.hp = hp;
     this.currentHP = hp;
     this.def = def;
+  }
+
+  /**
+   * Listener method for the observer implementation. The controller will observe
+   * the character and will get notified when it gets K.O'd
+   * @param handler the handler in question
+   */
+  public void addKOEventListener(IHandler handler) {
+    knockedOutEvent.addPropertyChangeListener(handler);
+  }
+
+  /**
+   * Listener method for the observer implementation. The controller will observe
+   * the character and will get notified when it starts its turn.
+   * @param handler the handler in question
+   */
+  public void addTimerEndedEventListener(IHandler handler) {
+    timerEvent.addPropertyChangeListener(handler);
+  }
+
+  /**
+   * Listener method for the observer implementation. The controller will observe
+   * the character and will get notified when it ends its turn.
+   * @param handler the handler in question
+   */
+  public void addEndTurnEventListener(IHandler handler) {
+    endTurnEvent.addPropertyChangeListener(handler);
   }
 
   /**
@@ -62,9 +99,18 @@ public abstract class AbstractCharacter implements ICharacter {
 
   /**
    * Adds this character to the turns queue.
+   * When weight/10 seconds has passed, the handler will get
+   * notified the character was added to the queue.
    */
   protected void addToQueue() {
     turnsQueue.add(this);
+    //Fue añadido a la cola después del tiempo de espera
+    //de weight/10, por lo que se notifica al controlador
+    //del suceso para que proceda del paso 5 al 1.
+    //De esta forma, puede saber que el siguiente personaje
+    //está listo para ser seleccionado y comenzar su turno.
+    timerEvent.firePropertyChange(getName() + " was" +
+            " added to the queue", null, this);
     scheduledExecutor.shutdown();
   }
 
@@ -80,7 +126,9 @@ public abstract class AbstractCharacter implements ICharacter {
    * @return the hp of the character.
    */
   @Override
-  public int getHP() { return hp; }
+  public int getHP() {
+    return hp;
+  }
 
   /**
    * Returns the current HP of the character.
@@ -119,18 +167,63 @@ public abstract class AbstractCharacter implements ICharacter {
   public abstract boolean isPlayableCharacter();
 
   /**
-   * Attack method
-   * @param character the target of the attack
+   * Returns true or false depending on the character
    */
   @Override
-  public void attack(ICharacter character) {
+  public boolean isMage() {
+    return false;
+  }
 
-    //edge-conditions
-    if(!(this.isKO() || character.isKO())) {
+  /**
+   * Attack method
+   * Checks if the attacker or the target is already KO.
+   * In that case, nothing happens.
+   * If it's not the case, calculates the output damage with
+   * calculateAttack(), then the target makes a call to receiveAttack()
+   * method.
+   * Can't attack themselves.
+   * When a character attacks, it triggers the end turn notification
+   * to its handler.
+   * @param character the target of the attack
+   * @return true if the attack succeeds, false otherwise.
+   */
+  @Override
+  public boolean attack(ICharacter character) {
+
+    //edge-conditions, neither of the characters
+    //should be K.O to interact. Can't attack itself.
+    if(!(this.isKO() || character.isKO()) && !this.equals(character)) {
       int output = this.calculateAttack();
-      //receive Attack
+      character.receiveAttack(output);
+      //notification for the end of the turn
+      endTurnEvent.firePropertyChange(getName() + " ended its turn",
+              null, this);
+      return true;
     }
-    //else can't attack
+    //else doesn't attack
+    return false;
+  }
+
+  /**
+   * Receives an attack from the opponent.
+   * It calculates the final damage received as
+   * actual damage = received damage - defense.
+   *
+   * If the character gets K.O'd, it will trigger the knocked out
+   * event and will notify its listeners about it.
+   *
+   * @param receivedDamage output damage of the opponent.
+   */
+  @Override
+  public void receiveAttack(int receivedDamage) {
+    int actualDamage = receivedDamage - getDef();
+    int newHp = getCurrentHP() - actualDamage;
+    setCurrentHP(newHp);
+
+    if(isKO()) {
+      knockedOutEvent.firePropertyChange(getName() + " is KO",
+              null, this);
+    }
   }
 
   /**

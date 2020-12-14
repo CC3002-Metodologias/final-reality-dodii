@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * Set of tests for the Abstract Mage character class.
  *
@@ -30,6 +32,16 @@ public class AbstractMageCharacterTest extends AbstractPlayerCharacterTest {
 
         whiteMage = new WhiteMageCharacter(WHITE_MAGE_NAME, HP, DEFENSE, MANA, turns);
         blackMage = new BlackMageCharacter(BLACK_MAGE_NAME, HP, DEFENSE, MANA, turns);
+    }
+
+    /**
+     * Tests the isMage method.
+     */
+    @Test
+    public void isMageTest() {
+        assertTrue(whiteMage.isMage());
+        assertTrue(blackMage.isMage());
+
     }
 
     /**
@@ -85,6 +97,52 @@ public class AbstractMageCharacterTest extends AbstractPlayerCharacterTest {
 
         checkWaitTurn(blackMage);
         turns.clear();
+    }
+
+    /**
+     * attack(), calculateAttack() and receiveAttack() tests
+     */
+    @Override
+    @Test
+    public void attackTest() {
+        //preliminary set up
+        super.weaponSetUp();
+        var targetPractice = new Enemy("Target", 40, 3, 3, 10, turns);
+
+        //mages has no weapon equipped
+        assertTrue(blackMage.attack(targetPractice));
+        assertEquals(40, targetPractice.getCurrentHP());
+        assertFalse(targetPractice.isKO());
+
+        assertTrue(whiteMage.attack(targetPractice));
+        assertEquals(40, targetPractice.getCurrentHP());
+        assertFalse(targetPractice.isKO());
+
+        //only here both mages will equip the very same 10 dmg staff
+        blackMage.equip(testStaff);
+        whiteMage.equip(testStaff);
+
+        assertTrue(blackMage.attack(targetPractice));
+        assertEquals(33, targetPractice.getCurrentHP());
+        assertFalse(targetPractice.isKO());
+
+        assertTrue(whiteMage.attack(targetPractice));
+        assertEquals(26, targetPractice.getCurrentHP());
+        assertFalse(targetPractice.isKO());
+
+        //they can't attack themselves
+        assertFalse(blackMage.attack(blackMage));
+        assertFalse(whiteMage.attack(whiteMage));
+
+        //they attack each other
+        assertTrue(blackMage.attack(whiteMage));
+        assertEquals(8, whiteMage.getCurrentHP());
+        assertFalse(whiteMage.isKO());
+
+        assertTrue(whiteMage.attack(blackMage));
+        assertEquals(8, blackMage.getCurrentHP());
+        assertFalse(blackMage.isKO());
+
     }
 
     /**

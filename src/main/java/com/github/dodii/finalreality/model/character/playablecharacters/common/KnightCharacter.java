@@ -16,7 +16,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class KnightCharacter extends AbstractPlayerCharacter implements ICommonCharacter {
 
-    private static String CUSTOM_PARAMETER = "K";
+    private static final String CUSTOM_PARAMETER = "K";
 
     /**
      * Creates a new character.
@@ -31,21 +31,17 @@ public class KnightCharacter extends AbstractPlayerCharacter implements ICommonC
         super(name, hp, def, turnsQueue);
     }
 
-    @Override
-    public int calculateAttack() {
-        return 0;
-    }
-
-
     /**
      * Equips a certain weapon to a character.
      * Checks the weapon's type to follow the
-     * rules of the game when equipping.
+     * rules of the game when equipping by using double dispatch.
+     * A knight may only equip swords, axes and knives.
+     * All characters can equip null weapons.
      * @param weapon weapon to be equipped.
      */
     @Override
     public void equip(@NotNull IWeapon weapon) {
-
+        weapon.equipToKnight(this);
     }
 
     /**

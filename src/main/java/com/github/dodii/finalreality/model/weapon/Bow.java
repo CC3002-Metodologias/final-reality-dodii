@@ -1,5 +1,10 @@
 package com.github.dodii.finalreality.model.weapon;
 
+import com.github.dodii.finalreality.model.character.playablecharacters.common.EngineerCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.KnightCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.ThiefCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.mage.IMageCharacter;
+
 import java.util.Objects;
 
 /**
@@ -10,13 +15,49 @@ import java.util.Objects;
  */
 public class Bow extends AbstractWeapon {
 
-    private static String CUSTOM_PARAMETER = "B";
+    private static final String CUSTOM_PARAMETER = "B";
 
     /**
      * Creates a bow with a name, a base damage, speed and its type.
      */
     public Bow(final String name, final int dmg, final int weight) {
         super(name, dmg, weight);
+    }
+
+    /**
+     * Aux method for the double dispatch equip implementation.
+     * @param engineer character to equip weapon
+     */
+    @Override
+    public void equipToEngineer(EngineerCharacter engineer) {
+        engineer.receiveWeapon(this);
+    }
+
+    /**
+     * Aux method for the double dispatch equip implementation
+     * @param knight character to equip weapon
+     */
+    @Override
+    public void equipToKnight(KnightCharacter knight) {
+        //doesn't equip//
+    }
+
+    /**
+     * Aux method for the double dispatch equip implementation
+     * @param thief character to equip weapon
+     */
+    @Override
+    public void equipToThief(ThiefCharacter thief) {
+        thief.receiveWeapon(this);
+    }
+
+    /**
+     * Aux method for the double dispatch equip implementation
+     * @param mage character to equip weapon
+     */
+    @Override
+    public void equipToMage(IMageCharacter mage) {
+        //doesn't equip//
     }
 
     /**

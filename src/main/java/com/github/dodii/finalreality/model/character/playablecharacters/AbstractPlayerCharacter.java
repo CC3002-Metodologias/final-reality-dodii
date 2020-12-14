@@ -2,7 +2,6 @@ package com.github.dodii.finalreality.model.character.playablecharacters;
 
 import com.github.dodii.finalreality.model.character.AbstractCharacter;
 import com.github.dodii.finalreality.model.character.ICharacter;
-import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
 import com.github.dodii.finalreality.model.weapon.IWeapon;
@@ -17,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractPlayerCharacter extends AbstractCharacter implements IPlayerCharacter {
 
-  private IWeapon equippedWeapon = new NullWeapon();
+  private IWeapon equippedWeapon = NullWeapon.uniqueInstance();
 
   /**
    * Creates a new character.
@@ -45,13 +44,20 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
   }
 
   /**
-   * Protected method to set a weapon. It's called from
-   * equip().
-   * @param weapon
+   * Method to set a weapon. It's called from
+   * equip() and the double dispatch aux methods.
+   * @param weapon weapon to equip.
    */
   protected void setEquippedWeapon(IWeapon weapon) {
-    this.equippedWeapon = weapon;
+    equippedWeapon = weapon;
   }
+
+  /**
+   * Equips a certain weapon to a character.
+   * @param weapon weapon to be equipped.
+   */
+  @Override
+  public abstract void equip(IWeapon weapon);
 
   /**
    * Calculates the character's delay by using the weight of the equipped weapon.
@@ -63,18 +69,27 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
   }
 
   /**
-   * Equips a certain weapon to a character.
-   * @param weapon weapon to be equipped.
-   */
-  @Override
-  public abstract void equip(IWeapon weapon);
-
-  /**
    * @return true if it's a playable character.
    */
   @Override
   public boolean isPlayableCharacter() {
     return true;
+  }
+
+  /**
+   * Calculates the output damage the character does before
+   * considering the target's defense.
+   * Considers the damage of the equipped weapon.
+   * @return Output damage.
+   */
+  @Override
+  public int calculateAttack() {
+    return getEquippedWeapon().getDmg();
+  }
+
+  @Override
+  public void receiveWeapon(IWeapon weapon) {
+    setEquippedWeapon(weapon);
   }
 
   /**

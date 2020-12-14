@@ -59,10 +59,24 @@ public interface ICharacter {
   boolean isPlayableCharacter();
 
   /**
+   * Returns true or false depending on the character
+   */
+  boolean isMage();
+
+  /**
    * Attack method
    * @param target character attacked.
+   * @return true if the attack succeeds, false otherwise.
    */
-  void attack(ICharacter target);
+  boolean attack(ICharacter target);
+
+  /**
+   * Receives an attack from the opponent.
+   * It calculates the final damage as
+   * actual damage = received damage - defense.
+   * @param receivedDamage output damage of the opponent.
+   */
+  void receiveAttack(int receivedDamage);
 
   /**
    * Calculates the output damage the character does before

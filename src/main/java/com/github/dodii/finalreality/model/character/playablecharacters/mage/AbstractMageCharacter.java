@@ -2,6 +2,7 @@ package com.github.dodii.finalreality.model.character.playablecharacters.mage;
 
 import com.github.dodii.finalreality.model.character.ICharacter;
 import com.github.dodii.finalreality.model.character.playablecharacters.AbstractPlayerCharacter;
+import com.github.dodii.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -38,6 +39,28 @@ public abstract class AbstractMageCharacter extends AbstractPlayerCharacter impl
     public int getMana() {
         return mana;
     }
+
+    /**
+     * Returns true or false depending on the character
+     */
+    @Override
+    public boolean isMage() {
+        return true;
+    }
+
+    /**
+     * Equips a certain weapon to a character.
+     * Checks the weapon's type to follow the
+     * rules of the game when equipping by using double dispatch.
+     * A mage may only equip staffs.
+     * All characters can equip null weapons.
+     * @param weapon weapon to be equipped.
+     */
+    @Override
+    public void equip(@NotNull IWeapon weapon) {
+        weapon.equipToMage(this);
+    }
+
 
     /**
      * Returns the hashcode of the character.

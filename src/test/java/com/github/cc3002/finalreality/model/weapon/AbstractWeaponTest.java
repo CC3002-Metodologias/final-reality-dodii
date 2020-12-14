@@ -1,5 +1,12 @@
 package com.github.cc3002.finalreality.model.weapon;
 
+import com.github.dodii.finalreality.model.character.ICharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.IPlayerCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.EngineerCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.KnightCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.common.ThiefCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.mage.BlackMageCharacter;
+import com.github.dodii.finalreality.model.character.playablecharacters.mage.WhiteMageCharacter;
 import com.github.dodii.finalreality.model.weapon.*;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,7 +47,7 @@ public class AbstractWeaponTest {
   /**
    * Aux switch method to create particular instances of IWeapons.
    * Used mostly for efficient and faster creation of objects.
-   * @param weaponName
+   * @param weaponName name of the weapon
    * @return an IWeapon instance of a weapon with the static stats parameters.
   */
   protected IWeapon getIWeapon(@NotNull String weaponName) {
@@ -55,7 +63,7 @@ public class AbstractWeaponTest {
       case SWORD_NAME:
         return new Sword(SWORD_NAME, DAMAGE, WEIGHT);
       default:
-        return new NullWeapon();
+        return NullWeapon.uniqueInstance();
     }
   }
 
@@ -136,10 +144,10 @@ public class AbstractWeaponTest {
     Sword expectedSword = new Sword(SWORD_NAME, DAMAGE, WEIGHT);
     Bow expectedBow = new Bow(BOW_NAME, DAMAGE, WEIGHT);
     Knife expectedKnife = new Knife(KNIFE_NAME, DAMAGE, WEIGHT);
-    NullWeapon expectedNull = new NullWeapon();
+    NullWeapon expectedNull = NullWeapon.uniqueInstance();
 
     Axe aux_Axe = new Axe("Aux Axe", DAMAGE, 1);
-    /** Axe **/
+    /* Axe **/
     checkEquals(expectedAxe, testAxe);
     checkNotEquals(expectedAxe, testBow);
     checkNotEquals(expectedAxe, testKnife);
@@ -153,7 +161,7 @@ public class AbstractWeaponTest {
     checkNotEquals(aux_Sword, testAxe);
 
     Bow aux_Bow = new Bow("Test Axe", 1, WEIGHT);
-    /** Bow **/
+    /* Bow **/
     checkEquals(expectedBow, testBow);
     checkNotEquals(expectedBow, testAxe);
     checkNotEquals(expectedBow, testKnife);
@@ -162,7 +170,7 @@ public class AbstractWeaponTest {
     checkNotEquals(expectedBow, testNull);
     checkNotEquals(aux_Bow, expectedBow);
 
-    /** Knife **/
+    /* Knife **/
     checkEquals(expectedKnife, testKnife);
     checkNotEquals(expectedKnife, testAxe);
     checkNotEquals(expectedKnife, testBow);
@@ -170,7 +178,7 @@ public class AbstractWeaponTest {
     checkNotEquals(expectedKnife, testSword);
     checkNotEquals(expectedKnife, testNull);
 
-    /** Staff **/
+    /* Staff **/
     checkEquals(expectedStaff, testStaff);
     checkNotEquals(expectedStaff, testAxe);
     checkNotEquals(expectedStaff, testBow);
@@ -178,7 +186,7 @@ public class AbstractWeaponTest {
     checkNotEquals(expectedStaff, testSword);
     checkNotEquals(expectedStaff, testNull);
 
-    /** Sword **/
+    /* Sword **/
     checkEquals(expectedSword, testSword);
     checkNotEquals(expectedSword, testAxe);
     checkNotEquals(expectedSword, testBow);
@@ -186,13 +194,135 @@ public class AbstractWeaponTest {
     checkNotEquals(expectedSword, testStaff);
     checkNotEquals(expectedSword, testNull);
 
-    /** Null Weapon **/
-    checkEquals(expectedNull, testNull);
+    /* Null Weapon */
     checkNotEquals(expectedNull, testAxe);
     checkNotEquals(expectedNull, testBow);
     checkNotEquals(expectedNull, testKnife);
     checkNotEquals(expectedNull, testStaff);
     checkNotEquals(expectedNull, testSword);
+  }
+
+  /**
+   * Test for the double dispatch implementation of the equip mechanic built
+   * with double dispatch.
+   */
+  @Test
+  public void equipToClassTest() {
+    var queue = new LinkedBlockingDeque<ICharacter>();
+    var knight = new KnightCharacter("Knight", 10, 10, queue);
+    var engineer = new EngineerCharacter("Engineer", 10, 10, queue);
+    var thief = new ThiefCharacter("Thief", 10, 10, queue);
+    var bMage = new BlackMageCharacter("Black Mage", 5, 5, 5, queue);
+    var wMage = new WhiteMageCharacter("White Mage", 5, 5, 5, queue);
+
+    var charsArray = new ArrayList<IPlayerCharacter>();
+    charsArray.add(knight);
+    charsArray.add(engineer);
+    charsArray.add(thief);
+    charsArray.add(bMage);
+    charsArray.add(wMage);
+
+    /* check the null weapon first */
+    for (var chars : charsArray) {
+      assertEquals(testNull, chars.getEquippedWeapon());
+      assertEquals(testNull, chars.getEquippedWeapon());
+    }
+
+    /* equipToClass of NullWeapon */
+    testNull.equipToKnight(knight);
+    assertEquals(testNull, knight.getEquippedWeapon());
+
+    testNull.equipToEngineer(engineer);
+    assertEquals(testNull, engineer.getEquippedWeapon());
+
+    testNull.equipToThief(thief);
+    assertEquals(testNull, thief.getEquippedWeapon());
+
+    testNull.equipToMage(bMage);
+    assertEquals(testNull, bMage.getEquippedWeapon());
+
+    testNull.equipToMage(wMage);
+    assertEquals(testNull, wMage.getEquippedWeapon());
+
+    /* equipToClass of Axe */
+    testAxe.equipToKnight(knight);
+    assertEquals(testAxe, knight.getEquippedWeapon());
+
+    testAxe.equipToEngineer(engineer);
+    assertEquals(testAxe, engineer.getEquippedWeapon());
+
+    testAxe.equipToThief(thief);
+    assertEquals(testNull, thief.getEquippedWeapon());
+
+    testAxe.equipToMage(bMage);
+    assertEquals(testNull, bMage.getEquippedWeapon());
+
+    testAxe.equipToMage(wMage);
+    assertEquals(testNull, wMage.getEquippedWeapon());
+
+    /* equipToClass of Bow */
+    testBow.equipToKnight(knight);
+    assertEquals(testAxe, knight.getEquippedWeapon());
+
+    testBow.equipToEngineer(engineer);
+    assertEquals(testBow, engineer.getEquippedWeapon());
+
+    testBow.equipToThief(thief);
+    assertEquals(testBow, thief.getEquippedWeapon());
+
+    testBow.equipToMage(bMage);
+    assertEquals(testNull, bMage.getEquippedWeapon());
+
+    testBow.equipToMage(wMage);
+    assertEquals(testNull, wMage.getEquippedWeapon());
+
+    /* equipToClass of Knife */
+    testKnife.equipToKnight(knight);
+    assertEquals(testKnife, knight.getEquippedWeapon());
+
+    testKnife.equipToEngineer(engineer);
+    assertEquals(testBow, engineer.getEquippedWeapon());
+
+    testKnife.equipToThief(thief);
+    assertEquals(testKnife, thief.getEquippedWeapon());
+
+    testKnife.equipToMage(bMage);
+    assertEquals(testNull, bMage.getEquippedWeapon());
+
+    testKnife.equipToMage(wMage);
+    assertEquals(testNull, wMage.getEquippedWeapon());
+
+    /* equipToClass of Sword */
+    testSword.equipToKnight(knight);
+    assertEquals(testSword, knight.getEquippedWeapon());
+
+    testSword.equipToEngineer(engineer);
+    assertEquals(testBow, engineer.getEquippedWeapon());
+
+    testSword.equipToThief(thief);
+    assertEquals(testSword, thief.getEquippedWeapon());
+
+    testSword.equipToMage(bMage);
+    assertEquals(testNull, bMage.getEquippedWeapon());
+
+    testSword.equipToMage(wMage);
+    assertEquals(testNull, wMage.getEquippedWeapon());
+
+    /* equipToClass of Staff */
+    testStaff.equipToKnight(knight);
+    assertEquals(testSword, knight.getEquippedWeapon());
+
+    testStaff.equipToEngineer(engineer);
+    assertEquals(testBow, engineer.getEquippedWeapon());
+
+    testStaff.equipToThief(thief);
+    assertEquals(testSword, thief.getEquippedWeapon());
+
+    testStaff.equipToMage(bMage);
+    assertEquals(testStaff, bMage.getEquippedWeapon());
+
+    testStaff.equipToMage(wMage);
+    assertEquals(testStaff, wMage.getEquippedWeapon());
 
   }
 }

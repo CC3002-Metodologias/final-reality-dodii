@@ -31,20 +31,17 @@ public class ThiefCharacter extends AbstractPlayerCharacter implements ICommonCh
         super(name, hp, def, turnsQueue);
     }
 
-    @Override
-    public int calculateAttack() {
-        return 0;
-    }
-
     /**
      * Equips a certain weapon to a character.
      * Checks the weapon's type to follow the
-     * rules of the game when equipping.
+     * rules of the game when equipping by using double dispatch.
+     * A thief may only equip swords, knives and bows.
+     * All characters can equip null weapons.
      * @param weapon weapon to be equipped.
      */
     @Override
-    public void equip(IWeapon weapon) {
-
+    public void equip(@NotNull IWeapon weapon) {
+        weapon.equipToThief(this);
     }
 
     /**
