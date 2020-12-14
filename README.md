@@ -152,22 +152,19 @@ cuando un personaje acaba de atacar y termina su turno.
 - El equipamiento de armas implementa double dispatch, con el fin de respetar los principios SOLID. La clase AbstractPlayerCharacter implementa el método equip(),
 definido particularmente en cada subclase. Por ejemplo, para la clase EngineerCharacter, el método es implementado de la siguiente forma:
 
----
-@Override
+> @Override
     public void equip(@NotNull IWeapon weapon) {
         weapon.equipToEngineer(this);
     }
----
 
 Como se puede ver, equip() llama al método equipToEngineer (colocando al personaje ingeniero como argumento) del arma en cuestión. Dicho método está definido en
 cada subclase de la jerarquía originada en AbstractWeapon. Por ejemplo, en la clase Axe, está implementado de la siguiente forma:
 
----
-@Override
+
+> @Override
     public void equipToEngineer(@NotNull EngineerCharacter engineer) {
         engineer.receiveWeapon(this);
     }
----
 
 Donde se ve que el arma es recibida por el personaje mediante el método receiveWeapon(IWeapon weapon), siendo efectivamente equipada. Por el contrario, si 
 EngineerCharacterse hubiese intentado equipar un objeto de la clase Staff, esto no habría resultado, dado que el método equipToEngineer llamaría a receiveWeapon
@@ -200,26 +197,20 @@ La implementación de las notificaciones (observer pattern) y sus handlers es la
 - Fueron creados los handlers TimerHandler, KnockOutHandler y EndTurnHandler. Éstos fueron explicados más arriba. Cada uno maneja la respectiva notificación también
 explicada anteriormente. Son instanciados por el controlador, entregándose como parámetro a sí mismo.
 
----
-Controller { 
-...
-/* Handlers and related objects for notifications of the observer pattern */
-    private final IHandler timerHandler = new TimerHandler(this);
-    private final IHandler endTurnHandler = new EndTurnHandler(this);
-    private final IHandler knockOutHandler = new KnockOutHandler(this);
-... }
-
----
+> Controller { 
+    ...
+    /* Handlers and related objects for notifications of the observer pattern */
+        private final IHandler timerHandler = new TimerHandler(this);
+        private final IHandler endTurnHandler = new EndTurnHandler(this);
+        private final IHandler knockOutHandler = new KnockOutHandler(this);
+    ... }
 
 - Éstos handlers son asignados a cada personaje creado, mediante los métodos:
 
----
 
-addKOEventListener(knockOutHandler);
-addTimerEndedEventListener(timerHandler);
-addEndTurnEventListener(endTurnHandler);
-
----
+> addKOEventListener(knockOutHandler);
+  addTimerEndedEventListener(timerHandler);
+  addEndTurnEventListener(endTurnHandler);
 
 Luego de ésto, cuando reciben las notificaciones, son manejadas de la siguiente forma:
 
