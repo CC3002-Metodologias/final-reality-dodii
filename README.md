@@ -233,7 +233,6 @@ Todo lo descrito anteriormente está testeado en sus respectivas clases.
 
 Por último, también hay una clase EnemyFactory y Turn con las respectivas Phases, que serán implementadas completamente en la siguiente entrega.
 
-
 # Deployment
 
 Downloading/cloning the project and opening it using IntelliJ IDE, then you can run the gradle build to
