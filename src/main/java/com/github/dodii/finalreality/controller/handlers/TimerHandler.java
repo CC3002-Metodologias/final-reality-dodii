@@ -1,6 +1,7 @@
 package com.github.dodii.finalreality.controller.handlers;
 
 import com.github.dodii.finalreality.controller.Controller;
+import com.github.dodii.finalreality.controller.turnphases.exceptions.InvalidTransitionException;
 import com.github.dodii.finalreality.model.character.ICharacter;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,6 +31,10 @@ public class TimerHandler implements IHandler {
      */
     @Override
     public void propertyChange(final @NotNull PropertyChangeEvent evt) {
-        controller.onTimerEnded((ICharacter) evt.getNewValue());
+        try {
+            controller.onTimerEnded((ICharacter) evt.getNewValue());
+        } catch (InvalidTransitionException e) {
+            e.printStackTrace();
+        }
     }
 }
