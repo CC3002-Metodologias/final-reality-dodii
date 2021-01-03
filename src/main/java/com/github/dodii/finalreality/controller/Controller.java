@@ -1,6 +1,9 @@
 package com.github.dodii.finalreality.controller;
 
 import com.github.dodii.finalreality.controller.handlers.*;
+import com.github.dodii.finalreality.controller.turnphases.*;
+import com.github.dodii.finalreality.controller.turnphases.exceptions.InvalidActionException;
+import com.github.dodii.finalreality.controller.turnphases.exceptions.InvalidTransitionException;
 import com.github.dodii.finalreality.model.character.ICharacter;
 import com.github.dodii.finalreality.model.character.enemycharacters.Enemy;
 import com.github.dodii.finalreality.model.character.enemycharacters.IEnemy;
@@ -48,6 +51,9 @@ public class Controller {
     /* Aux objects */
     private GameStatus status;
 
+    /* Turn class manipulating the phases of the game */
+    private Phase gamePhase;
+
     /**
      * Controller constructor
      */
@@ -58,6 +64,10 @@ public class Controller {
 
         turnsQueue = new LinkedBlockingDeque<>();
         status = GameStatus.PLAYING;
+
+        //we set a StartPhase, since's the first
+        //part of a turn
+        this.setPhase(new StartPhase());
     }
 
     /**
@@ -316,6 +326,26 @@ public class Controller {
     public void characterAttacksCharacter(@NotNull ICharacter attacker,
                                           @NotNull ICharacter target) {
         attacker.attack(target);
+        //after the attack, the respective phase will end the turn,
+        //advancing to the end phase.
+    }
+
+    /**
+     * Try method to check the attack. Handles the exception.
+     * @param attacker the attacker.
+     * @param target the target.
+     */
+    public void tryToAttack(@NotNull ICharacter attacker,
+                            @NotNull ICharacter target) {
+        try {
+            //character actually attacks, then changes to
+            //end phase
+            gamePhase.attack(target);
+            //in end phase, the endTurn method gets called
+            gamePhase.endTurn();
+        } catch (InvalidActionException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -365,7 +395,6 @@ public class Controller {
     }
 
     /**
-     *
      * @param character the character
      * @return the weapon equipped by the character
      */
@@ -417,6 +446,19 @@ public class Controller {
     }
 
     /**
+     * Try method to check if the character can actually equip a weapon.
+     * Handles the exception.
+     * @param weapon the attacker.
+     */
+    public void tryToEquip(@NotNull IWeapon weapon) {
+        try {
+            gamePhase.equipWeapon(weapon);
+        } catch (InvalidActionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Unequips the current weapon a character holds.
      * Technically, the controller equips it with a null weapon object.
      * If the character already has a null weapon equipped, it won't have
@@ -432,19 +474,59 @@ public class Controller {
     }
 
     /**
-     * This method gets notified when the set time of the character's timer
+     * Sets the current phase of the game.
+     * Also binds the controller to said phase.
+     * @param phase current phase to be bound with the controller.
+     */
+    public void setPhase(@NotNull Phase phase) {
+        this.gamePhase = phase;
+        phase.setController(this);
+    }
+
+    /**
+     * @return the current phase.
+     */
+    public Phase getCurrentPhase() {
+        return gamePhase;
+    }
+
+    /**
+     * Advances from the start phase to the selecting
+     * action phase by calling the respective method on
+     * the phase class.
+     */
+    public void toSelectingActionPhase()
+            throws InvalidTransitionException,
+            InvalidActionException {
+        var currentChar = getFirstQueueCharacter();
+        gamePhase.toSelectingActionPhase();
+
+        //if it's a playable character, it will be passed as such
+        //To the phase, then will be down casted.
+        if(currentChar.isPlayableCharacter()) {
+            gamePhase.receivePlayerCharacter(currentChar);
+        }
+        else {
+            gamePhase.receiveEnemy(currentChar);
+        }
+    }
+
+    /**
+     * This method gets notified when the set time of a character's timer
      * ends, so the controller can proceed from step 5 to 1 of the turn
      * The first character on the queue is selected. If it's a playable
      * character, the player can command it. If it's an enemy, it will
-     * attack randomly to a character of the player's party.
+     * attack randomly to a character of the player's party. This behavior
+     * is driven by the phases' classes.
      */
-    public void onTimerEnded(ICharacter character) {
+    public void onTimerEnded(ICharacter character)
+            throws InvalidTransitionException {
         //here, the controller should have gotten notified
         //that a character was added to the queue, so it can
         //select it to continue with step 1 of the turns' implementation.
-
-        //By now, it will implement this method that will select said character.
-        getFirstQueueCharacter();
+        if(gamePhase.isWaitingQueuePhase()) {
+            gamePhase.toStartPhase();
+        }
     }
 
     /**
@@ -468,20 +550,14 @@ public class Controller {
      * removed from the queue.
      * Then, it runs the timer of the character, as said on step 3
      * of the 2.2 section about said implementation.
-     * The rest of the implementation (about returning to step 1)
-     * will be coded in the next version.
      */
-    public void onTurnEnded(@NotNull ICharacter character) {
+    public void onTurnEnded(@NotNull ICharacter character)
+            throws InvalidTransitionException, InvalidActionException {
         popQueueCharacter();
         character.waitTurn();
 
-        //if queue's not empty, step 1
-        if(!turnsQueue.isEmpty()) {
-            //will remain empty for now, since it's not
-            //necessary for this partial assignment
-        }
-        //if empty, should proceed to step 5 of waiting to be
-        //notified when a character's waiting time ends.
+        //changes to end phase.
+        gamePhase.toEndPhase();
     }
 
     /**
@@ -546,4 +622,6 @@ public class Controller {
         System.out.println("You have lost this battle, but do not let" +
                 "hope faint, there's still a chance yet! ");
     }
+
+
 }

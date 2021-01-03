@@ -233,6 +233,63 @@ Todo lo descrito anteriormente está testeado en sus respectivas clases.
 
 Por último, también hay una clase EnemyFactory y Turn con las respectivas Phases, que serán implementadas completamente en la siguiente entrega.
 
+### Entrega 3 (final)
+Para la entrega final, solamente se terminó lo asignado en la entrega parcial 6, implementando las fases de los turnos del juego mediante state
+pattern y añadiendo nuevas funcionalidades a la clase Controller creada en la entrega 2. No se diseñó la interfaz gráfica por temas de tiempo, dándole 
+prioridad a otros ramos del estudiante este semestre. 
+
+El diseño en cuestión cuenta con 6 clases nuevas dentro del controlador de la arquitectura MVC, correspondiendo con las fases en que se dividió un turno del juego.
+En particular, el flujo de juego se construyó de la siguiente forma:
+- La primera clase es Phase, representando una fase genérica de un turno. Incluye métodos para asociar el controlador con las fases. Posee un atributo
+ICharacter currentCharacter, siendo éste el personaje que está jugando el turno en cuestión. Posee métodos para reconocer el tipo de fase, siendo del estilo:
+
+> public boolean is[nombre_fase]Phase() {...}
+
+A su vez, posee métodos de transición, similares en estructura al ejemplo anterior. Tales métodos arrojan una excepción personalizada (InvalidTransition-
+Exception), dependiendo de si es posible transicionar desde cierta fase del turno a otra:
+
+> public void to[nombre_fase]Phase() thros InvalidTransitionException {...}
+
+Por último, posee los métodos attack(ICharacter target), equipWeapon(IWeapon weapon), endTurn(), receivePlayerCharacter(ICharacter character) y 
+receiveEnemy(ICharacter enemy), cuyas funcionalidades dependen de la fase, cada uno arrojando una excepción InvalidActionException. Estos métodos
+serán explicados en detalle en la fase que los implemente.
+
+- La segunda fase es StartPhase, siendo subclase de Phase. Representa el inicio de un turno. Es la primera fase instanciada por el controlador de 
+manera automática. Posee solamente la transición a la siguiente fase, existiendo como prevención a futuro en caso de querer expandir el código.
+
+- La tercera fase es SelectingActionPhase, paso previo al ataque. Dependiendo de la clase de personaje que esté jugando su turno, el curso de acción
+a través del controlador es distinto. Si es un playerCharacter, el controlador le entrega a la fase el personaje a través del método receivePlayerCharacter(),
+permitiendo equipar armas. Luego de esto, se llama al método selectAndAttackTarget(ICharacter target) para seleccionar el objetivo (existe fuego amigo) y pasar
+a la siguiente fase (la de ataque). En caso contrario de que sea el turno de un jugador enemigo, el controlador le entrega el personaje a la fase a través del
+método receiveEnemy(), donde procede a seleccionar de manera aleatoria y automática un personaje de la party del jugador, avanzando luego a la fase de ataque.
+
+- La cuarta fase es AttackPhase(ICharacter attacker, ICharacter target), que recibe los personajes en combate del turno. En ésta fase, se llama al método
+attack(ICharacter target), donde ocurre finalmente el ataque. Esta fase llama al método de ataque del controlador para ejecutar finalmente la acción. En seguida,
+el modelo notifica al controlador de que el turno del personaje terminó mediante el patrón observer, gatillando el método onTurnEnded(), pasando a la fase de fin de turno.
+
+- La quinta fase es EndPhase. Aquí se llama al método endTurn(), revisando la cola del controlador. Si ésta resulta no estar vacía, se procede a una nueva StartPhase. De
+lo contrario, se avanza a la última fase del juego, con el fin de esperar una nueva notificación que alerte al controlador de que la cola ya no está vacía.
+
+- La última fase es WaitingQueuePhase, que solo posee métodos de transición a la fase StartPhase. El turno del juego se queda en esta fase estacionaria cuando la cola
+se encuentra vacía. Una vez que el temporizador de un personaje haya terminado, se notificará desde el modelo al controlador que la cola no está vacía, accionando el
+método onTimerEnded(). Se revisa la fase del juego. Si resulta ser una fase del tipo WaitingQueuePhase, significa que el juego estaba esperando a que la cola dejara
+de estar vacía, por lo que se avanza a una nueva StartPhase para el personaje que está en la cola. Por otro lado, si resultara ser cualquier otra fase, significa que el
+turno de otro personaje está en curso, por lo que no es necesario hacer nada.
+
+Para finalizar, como se mencionó anteriormente, se añadieron nuevos métodos al controlador, y también se modificaron otros para completar lo requerido en relación al 
+diseño de los turnos y fases del juego. Por ejemplo:
+
+- El método onTurnEnded, notificado por el observer cuando un personaje acaba de atacar, modifica la fase, transicionando a EndPhase. 
+- El método onTimerEnded, notificado por el observer cuando el temporizador de un personaje acaba, revisa la fase actual, y en caso de ser la fase estacionaria Waiting-
+QueuePhase, avanza a StartPhase.
+- Se añade el método toSelectingActionPhase, el cual revisa si el personaje del turno pertenece al jugador o a la CPU, llamando al método respectivo de la fase para
+recibir a dicho personaje.
+- Método setPhase, que cambia la fase actual del turno asociada al controlador.
+- Por último, métodos tryAttack y tryEquip, encargados de atrapar (catch) las excepciones, con el fin de que no lleguen al usuario.
+
+Los métodos y funcionalidades de las fases están testeadas en su mayoría.
+
+
 # Deployment
 
 Downloading/cloning the project and opening it using IntelliJ IDE, then you can run the gradle build to
@@ -259,3 +316,5 @@ This work is licensed under a
 
 # Thanks to
 - Ephyy
+- Franua
+
