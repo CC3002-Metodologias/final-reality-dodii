@@ -289,6 +289,7 @@ recibir a dicho personaje.
 
 Los métodos y funcionalidades de las fases están testeadas en su mayoría.
 
+
 # Deployment
 
 Downloading/cloning the project and opening it using IntelliJ IDE, then you can run the gradle build to
@@ -316,3 +317,4 @@ This work is licensed under a
 # Thanks to
 - Ephyy
 - Franua
+
